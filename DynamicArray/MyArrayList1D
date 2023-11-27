@@ -1,0 +1,241 @@
+package DynamicArray;
+
+// COMPLETED
+public class MyArrayList1D<T extends Comparable<T>> {
+
+    /*
+    This is a dynamic (resizeable) array (also known as an array list) data structure. 
+    it is one dimensional and of generic (any) type. you can add as many values as you 
+    like as it will resize itself where needed. Each method in the class is a function 
+    that can be performed on this one dimensional array. 
+     */
+    public T[] array; // the array
+    public int pointerIndex; // pointer till which indexes previously are filled
+    public int extraIndexCounter; // counts the no of indexes filled AFTER the pointerIndex with spaces in between
+
+    public MyArrayList1D() {
+        // constructor: to create a standard size array of 5
+        this(5);
+    }
+
+    public MyArrayList1D(int size) {
+        // constructor: creates an array of the given capacity by calling the start() method
+        System.out.println("Welcome to MyArrayList!");
+        start(size);
+        System.out.println("Program has started running successfully. ");
+    }
+
+    private void start(int size) {
+        /*
+        method: starts the array list, it declares an array of size given and sets 
+        the pointer Index. the extra indexes is zero as no elements have been inserted. 
+         */
+        this.array = (T[]) new Comparable[size];
+        this.pointerIndex = -1;
+        this.extraIndexCounter = 0;
+    }
+
+    @Override
+    public String toString() {
+        // method: toString to get the entire array in one line
+        String str = "[";
+        int size = 0; // to count if we have displayed each non-null value or not
+        for (int i = 0; i < getCapacity(); i++) {
+            if (size < getSize()) { //if we still have to display values, 
+                if (this.array[i] != null) { //if its a non-null value, 
+                    size++; //increment size
+                    if (this.array[i].toString().length() >= 5) { //if its string is too long, 
+                        str += "\n"; //leave a line
+                    }
+                }
+                str += this.array[i] + ","; //then display the value at that index
+            } else if (getSize() == 0) {
+                str += " ";
+                break;
+            }
+        }
+        return str.substring(0, str.length() - 1) + "]";
+    }
+
+    public void insert(T data) {
+        //method: inserting values to the array. if array is full, double the size; after that add the element
+        if (getSize() == getCapacity()) {
+            incArraySize(getCapacity() * 2);
+        }
+        this.array[++this.pointerIndex] = data;
+        System.out.println("SUCCESS: Value '" + data.toString() + "' has been added successfully. ");
+    }
+
+    public void insertInOrder(T v) {
+        //first add the element, then sort the entire list
+        insert(v);
+        sortLowToHigh();
+    }
+
+    public int find(T value) {
+        /*
+        method: finds a value in the array. if arraylist is empty, return -1. then 
+        check each element and return index when found; else return -1
+         */
+        if (getSize() == 0) {
+            System.out.println("ERROR: MyArrayList is empty. ");
+            return -1;
+        }
+        for (int i = 0; i < getCapacity(); i++) {
+            if (this.array[i] != null && this.array[i].compareTo(value) == 0) {
+                System.out.println("SUCCESS: Value '" + value.toString() + "' is found at index " + i);
+                return i;
+            }
+        }
+        System.out.println("ERROR: Value '" + value.toString() + "' does not exist in MyArrayList. ");
+        return -1;
+    }
+
+    public void clear(T value) {
+        //method: clear the array. make array new and default size, clear the index pointer and extra counter
+        start(array.length);
+        System.out.println("SUCCESS: MyArrayList has been cleared successfully. \n" + toString());
+        System.out.println("Size = " + getSize() + "\nCapacity = " + getCapacity());
+    }
+
+    public T get(int index) {
+        /*
+        method: get the value at a specific index. if array is large enough to have 
+        that index and value at it is not null, return the value, else return null.
+         */
+        if (getCapacity() - 1 >= index && this.array[index] != null) {
+            System.out.println("SUCCESS: Value at index " + index + " is '" + this.array[index] + "'.");
+            return this.array[index];
+        } //else return null
+        System.out.println("ERROR: There is no value at index " + index + "\n" + toString());
+        return null;
+    }
+
+    public void update(int index, T value) {
+        /*
+        method: updates the value at a specific index. it does not matter if the value 
+        at that index is null or already existing; this method will modify the data at 
+        an index. 
+         */
+        //if index is lesser than zero, return immediately
+        if (index < 0) {
+            System.out.println("ERROR: Index to be updated is lesser than 0 and does not exist. ");
+            return;
+        }
+        //if index is greater than capacity of array, make it large enough.
+        if (index >= getCapacity()) {
+            incArraySize(index + 1);
+        }
+        //now either add it normally or update the specific index
+        if (index == this.pointerIndex + 1) { // if its just the next space, insert normally
+            insert(value);
+        } else if (index <= this.pointerIndex) { // if its being modified, modify it
+            this.array[index] = value;
+        } else { // otherwise, its being inserted. increment extraIndexes
+            this.array[index] = value;
+            this.extraIndexCounter++;
+        }
+        System.out.println("SUCCESS: Value '" + value.toString() + "' has been "
+                + "updated to index " + index + " successfully. ");
+    }
+
+    public void removeValue(T value) {
+        /*
+        method: this method removes a specific value from the array and backtracks 
+        the rest of the values. first find the index that you want to remove. then remove that index. 
+         */
+        int index = find(value);
+        if (index != -1) {
+            removeIndex(index);
+            return;
+        }
+        System.out.println("ERROR: Value '" + value + "' could not be removed. ");
+    }
+
+    public void removeIndex(int index) {
+        /*
+        method: removes a specific index by moving all the values ahead of it one step 
+        forward, and making the last value null. 
+         */
+        //if index is lesser than zero, return immediately
+        if (index < 0) {
+            System.out.println("ERROR: Index to be removed is lesser than 0 and does not exist. ");
+            return;
+        }
+        //until the last index, move each value forward to remove the removing index
+        while (index + 1 < getCapacity()) {
+            this.array[index++] = this.array[index + 1];
+        }
+        this.array[this.pointerIndex--] = null;
+        System.out.println("SUCCESS: Value has been removed successfully.");
+    }
+
+    public int getSize() {
+        /*
+        method: gets how many elements are in the array. return the number of 
+        indexes used ex if pointerIndex is -1, it means 0 indexes used
+         */
+        return this.pointerIndex + 1 + this.extraIndexCounter;
+    }
+
+    public int getCapacity() {
+        //method: gets how many spaces we have in total. return the capacity of the array
+        return this.array.length;
+    }
+
+    private void incArraySize(int incrementSize) {
+        /*
+        method: resizes the array when space is finished. it creates a new array with 
+        larger size, copies each value, then assigns the new array to the array. 
+         */
+        T[] newArray = (T[]) new Comparable[incrementSize];
+        for (int i = 0; i < getCapacity(); i++) {
+            newArray[i] = this.array[i];
+        }
+        this.array = newArray;
+    }
+
+    public T findMax() {
+        // method: finding the maximum value. sort the array and return the last value used
+        sortLowToHigh();
+        return this.array[this.pointerIndex];
+    }
+
+    public T findMin() {
+        // method: finding the minimum value. sort the array and return the first value
+        sortLowToHigh();
+        return this.array[0];
+    }
+
+    private void sortLowToHigh() {
+        /*
+        method: get a value and compare it to each value after it IF they are not null. if the value 
+        being compared with each value is LARGER, switch its places. then do this in 
+        nested for loop so that each value in the array is compared with every value. 
+         */
+        for (int i = 0; i < this.array.length; i++) {
+            for (int j = i + 1; j < this.array.length; j++) {
+                if (this.array[i] != null && this.array[j] != null && this.array[i].compareTo(this.array[j]) == 1) {
+                    T temp = this.array[j];//swap the values
+                    this.array[j] = this.array[i];
+                    this.array[i] = temp;
+                }
+            }
+        }
+    }
+
+    public void duplicateRemover() {
+        //method: removes duplicates. sort the array then check each value with its forward value. if same, remove it
+        sortLowToHigh();
+        for (int i = 0; i + 1 < getCapacity(); i++) {
+            if (array[i] != null && array[i + 1] != null && array[i].compareTo(array[i + 1]) == 0) {
+                removeIndex(i + 1);
+            }
+            if (i != 0 && array[i] != null && array[i - 1] != null && array[i].compareTo(this.array[i - 1]) == 0) {
+                removeIndex(i);
+            }
+        }
+        System.out.println("SUCCESS: All the duplicates have been removed successfully. ");
+    }
+
+}
