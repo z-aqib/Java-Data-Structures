@@ -5,7 +5,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     /*
     This is a dynamic (resizeable) array (also known as an array list) data structure. 
-    it is two dimensional and of generic (any) type. you can add as many values as you 
+    it is two dimensional and of generic (any) type. you can insert as many values as you 
     like as it will resize itself where needed. Each method in the class is a function 
     that can be performed on this two dimensional array. 
      */
@@ -46,12 +46,12 @@ public class MyArrayList2D<T extends Comparable<T>> {
             by the columns and then adding the half empty column spaces. example im 
             on (1,4) so i first find fully occupied rows (1*5=5) then remaining columns in 
             the current row (4) = 5+4=9. but actually 10 spaces are occupied in a 5 by5 matrix, 
-            so due to indexing, we add 1. 
-            - then it runs the loop for the remaining spaces to add that many values. 
+            so due to indexing, we insert 1. 
+            - then it runs the loop for the remaining spaces to insert that many values. 
          */
-        int rem = (array.length * array[0].length) - ((currentRow * array[0].length) + currentCol + 1);
+        int rem = (array.length * array[0].length) - (((currentRow + 1) * array[0].length) + currentCol + 1);
         for (int i = 0; i < rem; i++) {
-            add((T) (Comparable) (int) (Math.random() * 10));
+            insert((T) (Comparable) (int) (Math.random() * 10));
         }
     }
 
@@ -68,7 +68,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
          */
         String str = "";
         for (int i = 0; i <= this.currentRow; i++) {
-            for (int j = 0; j < this.array[0].length; j++) {
+            for (int j = 0; j < this.array[i].length; j++) {
                 str += this.array[i][j] + " "; // print the element
                 // now for the spacing between each element
                 int remaining_spaces = max_length - 4;
@@ -81,7 +81,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
             }
             str += "\n";
         }
-        return str;
+        return str.substring(0, str.length() - 2);
     }
 
     public void print2d() {
@@ -91,11 +91,11 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public void appendRow(T[] rowArray) {
         /*
-        method: adds a row to the entire matrix. to add a row, it must be equal to 
+        method: adds a row to the entire matrix. to insert a row, it must be equal to 
         the number of columns of the matrix. if it is equal, then proceed else return . 
-        simple logic, first create space to add another row if the array is full. then
+        simple logic, first create space to insert another row if the array is full. then
         simply copy paste the row array to the next row after current row. now move back 
-        to current row, so that when add function is called, it adds right where we left off
+        to current row, so that when insert function is called, it adds right where we left off
         before the row append. 
          */
         if (rowArray.length != this.currentCol + 1) {
@@ -115,11 +115,11 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public void appendCol(T[] colArray) {
         /*
-        method: adds a col to the entire matrix. to add a col, it must be equal to 
+        method: adds a col to the entire matrix. to insert a col, it must be equal to 
         the number of rows of the matrix. if it is equal, then proceed else return . 
-        simple logic, first create space to add another col if the array is full. then
+        simple logic, first create space to insert another col if the array is full. then
         simply copy paste the col array to the next col after current col. now move back 
-        to current col, so that when add function is called, it adds right where we left off
+        to current col, so that when insert function is called, it adds right where we left off
         before the col append. 
          */
         if (colArray.length != this.currentRow + 1) {
@@ -173,7 +173,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
         System.out.println("SUCCESS: Value '" + value + "' has been updated to (" + row + "," + col + "). ");
     }
 
-    public void add(T value) {
+    public void insert(T value) {
         /*
         method: adds a value to the next NULL space in the matrix. first it checks 
         if the matrix is full or not. then it checks if we've reached the end of the row, 
@@ -196,6 +196,12 @@ public class MyArrayList2D<T extends Comparable<T>> {
         System.out.println("SUCCESS: '" + value + "' has been added to (" + currentRow + "," + currentCol + "). ");
     }
 
+    public void insertInOrder(T value) {
+        //method: inserts in order. first it inserts normally then sorts it. 
+        insert(value);
+        sortLowToHigh();
+    }
+
     public int[] find(T value) {
         /*
         method: finds a value, just run two for loops and check each address. if found, 
@@ -203,7 +209,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
         then return row,col as -1,-1 to show that the value doesnt exist in the array. 
          */
         for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[0].length; j++) {
+            for (int j = 0; j < array[i].length; j++) {
                 if (array[i][j].compareTo(value) == 0) {
                     System.out.println("SUCCESS: Found '" + value + "' at (" + i + ", " + j + "). ");
                     return new int[]{i, j};
@@ -245,11 +251,9 @@ public class MyArrayList2D<T extends Comparable<T>> {
         int col = find[1];
         int row = find[0];
         while (array[row][col] != null) {
-            if (col == array[0].length - 1 && row != this.array.length) {
-                /*
-                if im on the last column but i have more rows, i move the value at the 
-                first index of the next row back. and move to the next row, first column. 
-                 */
+            if (col == array[0].length - 1 && row != this.array.length - 1) {
+                // if im on the last column but i have more rows, i move the value at the 
+                // first index of the next row back. and move to the next row, first column. 
                 this.array[row][col] = this.array[++row][0];
                 col = 0;
             } else if (col == this.array[0].length - 1 && row == currentRow) {
@@ -277,6 +281,91 @@ public class MyArrayList2D<T extends Comparable<T>> {
             currentCol--;
         }
         return true;
+    }
+
+    public void sortLowToHigh() {
+        /*
+        method: get a value (row, col) and compare it to each value after it IF they are not null. if the value 
+        being compared with each value is LARGER, switch its places. then do this in 
+        nested for loop so that each value in the array is compared with every value. 
+         */
+        // first 2 for-loops are to get a fixed value to compare
+        for (int i = 0; i < array.length; i++) { // to get each row
+            for (int j = 0; j < array[i].length; j++) { // to get each column
+                // second 2 for-loops are to get a changing value to compare the fixed value with
+                for (int k = 0; k < array.length; k++) { // to get each row
+                    for (int l = 0; l < array[k].length; l++) { // to get each column
+                        if ((i == k && j == l) || (array[i][j] == null || array[k][l] == null)) {
+                            // if the changing value is the same as the fixed value, dont compare. 
+                            // if any of the values being compared are null, dont compare. 
+                            continue;
+                        }
+                        if (array[k][l].compareTo(array[i][j]) == 1) {
+                            T temp = array[i][j]; // swap the values
+                            array[i][j] = array[k][l];
+                            array[k][l] = temp;
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("SUCCESS: The 2-d ArrayList has been sorted successfully. ");
+    }
+
+    public void removeDuplicates() {
+        /*
+        method: removes duplicates. first it sorts the list. then it gets each row, 
+        column and compares it to the next value. if it is same, remove that value. 
+        then it compares that existing row, col to the previous value. if it is same, 
+        remove that value. do this repeatedly for the entire matrix. 
+         */
+        sortLowToHigh();
+        int count = 0;
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                // forward comparision (value with its after value)
+                if (j == array[i].length - 1 && i != array.length - 1 && array[i][j] != null
+                        && array[i + 1][0] != null && array[i][j].compareTo(array[i + 1][0]) == 0) {
+                    //if we are at the end of the row and there exists another row after the 
+                    //current row, and the first value in the next row is not null, compare. 
+                    this.deleteByBackward(array[i + 1][0]);
+                    count++;
+                } else if (array[i][j] != null && j + 1 != array.length && array[i][j + 1] != null
+                        && array[i][j].compareTo(array[i][j + 1]) == 0) {
+                    //else if the value and the next value in the same row is not null, compare
+                    this.deleteByBackward(array[i][j + 1]);
+                    count++;
+                }
+                // backward comparision (value with its previous value)
+                if (i != 0 && array[i][j] != null && array[i - 1][array[0].length - 1] != null
+                        && array[i][j].compareTo(array[i - 1][array[0].length - 1]) == 0) {
+                    //if we are at the start of the row and there exists a row above the currnet row
+                    //and the last element in the above row is not null, compare
+                    this.deleteByBackward(array[i][j]);
+                    j--; // move it back for recomparision
+                    count++;
+                } else if (j != 0 && array[i][j] != null && array[i][j - 1] != null
+                        && array[i][j].compareTo(array[i][j - 1]) == 0) {
+                    //else if the value and the value before it in the same row is not null, compare
+                    this.deleteByBackward(array[i][j]);
+                    j--;// move it back for recomparision
+                    count++;
+                }
+            }
+        }
+        System.out.println("Number of duplicates removed = " + count);
+    }
+
+    public T getLowestValue() {
+        //method: returns the lowest value. first it sorts low to high then returns the first value
+        sortLowToHigh();
+        return array[0][0];
+    }
+
+    public T getHighestValue() {
+        //method: returns the highest value. first it sorts low to high then returns the last value
+        sortLowToHigh();
+        return array[currentRow][currentCol];
     }
 
 }
