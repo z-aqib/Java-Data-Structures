@@ -1,0 +1,282 @@
+package DynamicArray;
+
+// COMPLETED
+public class MyArrayList2D<T extends Comparable<T>> {
+
+    /*
+    This is a dynamic (resizeable) array (also known as an array list) data structure. 
+    it is two dimensional and of generic (any) type. you can add as many values as you 
+    like as it will resize itself where needed. Each method in the class is a function 
+    that can be performed on this two dimensional array. 
+     */
+    private T[][] array; // the array containing the values
+    private int currentRow; // the current row till which we have filled
+    private int currentCol; // the current column till which we have filled
+    private int max_length; // the maximum length of the elements
+
+    public MyArrayList2D(int row, int col) {
+        /*
+        constructor: create a 2d array of row,col size and intialize the currentRow 
+        and currentCol indexes to be -1 (to show that array is empty)
+        the maximum length of each element is 4 as all elements are 'null'. the maximum 
+        length will be recaculated at every element addition. 
+         */
+        this.array = (T[][]) new Comparable[row][col];
+        this.currentCol = this.currentRow = -1;
+        System.out.println("Two Dimension Dynamic Array[][] of " + row + " rows and " + col
+                + " columns has been created successfully. ");
+        this.max_length = 4;
+    }
+
+    public MyArrayList2D() {
+        /*
+        constructor: if user doesnt specify its required size of 2d array, it will 
+        create a standard size of 5 by 5. it is a dynamic resizeable array. 
+         */
+        this(5, 5);
+    }
+
+    public void assignRandomIntegers() {
+        /*
+        method: will intialize random integer values to the remaining matrix
+        it will first find how many spaces are left in the matrix by :
+            - first it calculates the total number of spaces in the matrix by multiplying row by col
+            example its a standard 5 by 5 matrix, so 25
+            - then it calculates the occupied spaces by first multiplying the fully occupied rows 
+            by the columns and then adding the half empty column spaces. example im 
+            on (1,4) so i first find fully occupied rows (1*5=5) then remaining columns in 
+            the current row (4) = 5+4=9. but actually 10 spaces are occupied in a 5 by5 matrix, 
+            so due to indexing, we add 1. 
+            - then it runs the loop for the remaining spaces to add that many values. 
+         */
+        int rem = (array.length * array[0].length) - ((currentRow * array[0].length) + currentCol + 1);
+        for (int i = 0; i < rem; i++) {
+            add((T) (Comparable) (int) (Math.random() * 10));
+        }
+    }
+
+    @Override
+    public String toString() {
+        /*
+        method: prints the 2d array by creating its string, first it runs two for loops: one till 
+        the currently occupied row and one for all columns. it will first get an element, display it
+        then find out how many spaces to leave before the next element. here max_length will be used, 
+        if it a null element, its length is 4. but if not null, we will compute its length. 
+        using its length, we find how many remaining spaces are left after we deduct from 
+        the max_length of element. then we display that many spaces using a for loop. 
+        after each row, we leave a line. 
+         */
+        String str = "";
+        for (int i = 0; i <= this.currentRow; i++) {
+            for (int j = 0; j < this.array[0].length; j++) {
+                str += this.array[i][j] + " "; // print the element
+                // now for the spacing between each element
+                int remaining_spaces = max_length - 4;
+                if (this.array[i][j] != null) {
+                    remaining_spaces = max_length - this.array[i][j].toString().length();
+                }
+                for (int k = 0; k < remaining_spaces; k++) {
+                    str += " ";
+                }
+            }
+            str += "\n";
+        }
+        return str;
+    }
+
+    public void print2d() {
+        // method: displays the entire array by converting to string and displaying the string
+        System.out.println(toString());
+    }
+
+    public void appendRow(T[] rowArray) {
+        /*
+        method: adds a row to the entire matrix. to add a row, it must be equal to 
+        the number of columns of the matrix. if it is equal, then proceed else return . 
+        simple logic, first create space to add another row if the array is full. then
+        simply copy paste the row array to the next row after current row. now move back 
+        to current row, so that when add function is called, it adds right where we left off
+        before the row append. 
+         */
+        if (rowArray.length != this.currentCol + 1) {
+            System.out.println("ERROR: This row cannot be appended as it needs to have "
+                    + this.currentCol + 1 + " columns but it has " + rowArray.length + " columns. ");
+            return;
+        }
+        if (++this.currentRow == this.array.length) {
+            incArray(this.array.length + 1, this.array[0].length);
+        }
+        for (int i = 0; i < rowArray.length; i++) {
+            array[currentRow][i] = rowArray[i];
+        }
+        currentRow--;
+        System.out.println("SUCCESS: The row has been appended successfully. ");
+    }
+
+    public void appendCol(T[] colArray) {
+        /*
+        method: adds a col to the entire matrix. to add a col, it must be equal to 
+        the number of rows of the matrix. if it is equal, then proceed else return . 
+        simple logic, first create space to add another col if the array is full. then
+        simply copy paste the col array to the next col after current col. now move back 
+        to current col, so that when add function is called, it adds right where we left off
+        before the col append. 
+         */
+        if (colArray.length != this.currentRow + 1) {
+            System.out.println("ERROR: This column cannot be appended as it needs to have "
+                    + this.array.length + " rows but it has " + colArray.length + " rows. ");
+            return;
+        }
+        if (++this.currentCol == this.array[0].length) {
+            incArray(this.array.length, this.array[0].length + 1);
+        }
+        for (int i = 0; i < colArray.length; i++) {
+            this.array[i][this.currentCol] = colArray[i];
+        }
+        currentCol--; // make it back to the column we were at before appending
+        System.out.println("SUCCESS: The column has been appended successfully. ");
+    }
+
+    private void incArray(int row, int col) {
+        /*
+        method: resizes the array. increases the array to the size specified by creating a new array of the 
+        given size and copying all the values given
+        - but before that, it checks if the size specified is lesser than the current size, 
+        so it returns. 
+         */
+        if (row < array.length || col < array[0].length) {
+            return;
+        }
+        T[][] newArray = (T[][]) new Comparable[row][col];
+        for (int i = 0; i <= this.currentRow; i++) {
+            for (int j = 0; j <= this.currentCol; j++) {
+                newArray[i][j] = this.array[i][j];
+            }
+        }
+        this.array = newArray;
+    }
+
+    public void updateIndex(int row, int col, T value) {
+        /*
+        method: changes/adds a value to a specific space in the matrix. it first checks 
+        if the matrix is big enough to have that specific address. it increases the matrix 
+        size to that address. then it modifies that address to give it that value. 
+         */
+        if (row + 1 >= this.array.length && col + 1 >= this.array[0].length) {
+            incArray(row + 2, col + 2);
+        } else if (row + 1 >= this.array.length) {
+            incArray(row + 2, this.array[0].length);
+        } else {
+            incArray(this.array.length, col + 2);
+        }
+        this.array[row][col] = value;
+        System.out.println("SUCCESS: Value '" + value + "' has been updated to (" + row + "," + col + "). ");
+    }
+
+    public void add(T value) {
+        /*
+        method: adds a value to the next NULL space in the matrix. first it checks 
+        if the matrix is full or not. then it checks if we've reached the end of the row, 
+        then increment row and go to the first column. then it checks, is that space null?
+        if yes, break the loop and place the value at that space. if not, rerun the loop
+        to find an empty null space. after the value is placed, compare its length to the 
+        max_length and re-calculate max_length. 
+         */
+        do {
+            if (currentRow + 1 >= array.length && currentCol + 1 >= array[0].length) {
+                incArray(currentRow + 2, array[0].length);
+            }
+            if (currentCol + 1 == array[0].length || currentRow == -1) {
+                currentRow++;
+                currentCol = -1;
+            }
+        } while (this.array[currentRow][++currentCol] != null);
+        this.array[currentRow][currentCol] = value;
+        max_length = Math.max(max_length, value.toString().length());
+        System.out.println("SUCCESS: '" + value + "' has been added to (" + currentRow + "," + currentCol + "). ");
+    }
+
+    public int[] find(T value) {
+        /*
+        method: finds a value, just run two for loops and check each address. if found, 
+        return the row,col as an int array. else if not found after checking each address, 
+        then return row,col as -1,-1 to show that the value doesnt exist in the array. 
+         */
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[0].length; j++) {
+                if (array[i][j].compareTo(value) == 0) {
+                    System.out.println("SUCCESS: Found '" + value + "' at (" + i + ", " + j + "). ");
+                    return new int[]{i, j};
+                }
+            }
+        }
+        System.out.println("ERROR: Value '" + value + "' not found. ");
+        return new int[]{-1, -1};
+    }
+
+    public boolean deleteByNull(T value) {
+        /*
+        method: deletes a specific value. first it finds its address of row,col using 
+        the find method. if the value isnt found, return false. it makes that address null 
+        and moves the currentRow and currentCol to that position so that the next insertion 
+        is at that null value. 
+         */
+        int[] find = find(value);
+        if (find[0] == -1) {
+            return false;
+        }
+        this.array[find[0]][find[1]] = null;
+        currentRow = find[0];
+        currentCol = find[1];
+        return true;
+    }
+
+    public boolean deleteByBackward(T value) {
+        /*
+        method: this methods deletes a specific value by backtracking all the values after 
+        it to remove the empty space, then makes the last space null. it does this by first 
+        finding the (row,col) coordinates of the deleting value and it moves one space ahead 
+        until we come to the last null value. 
+         */
+        int[] find = find(value);
+        if (find[0] == -1) {
+            return false;
+        }
+        int col = find[1];
+        int row = find[0];
+        while (array[row][col] != null) {
+            if (col == array[0].length - 1 && row != this.array.length) {
+                /*
+                if im on the last column but i have more rows, i move the value at the 
+                first index of the next row back. and move to the next row, first column. 
+                 */
+                this.array[row][col] = this.array[++row][0];
+                col = 0;
+            } else if (col == this.array[0].length - 1 && row == currentRow) {
+                // but if im on the last column and there are no more rows left, i make that place null. 
+                this.array[row][col] = null;
+            } else {
+                // otherwise, i backtrack normally. 
+                this.array[row][col] = this.array[row][++col];
+            }
+        }
+        /*
+        now that ive backtracked all the values, i have to backtrack by last value where 
+        currentCol and currentRow are standing. if i was at the start of a row, i have to 
+        move back one row and on the last index. so if my currentCol is 0, i move one row 
+        back and make currentCol stand on the last column. but if not, i move one space 
+        back on currentCol on the same currentRow. 
+         */
+        if (currentCol == 0) {
+            if (--currentRow == -1) { // if all the rows have finished, my array is empty, currentCol is -1. 
+                currentCol = -1;
+            } else {
+                currentCol = array[0].length - 1;
+            }
+        } else {
+            currentCol--;
+        }
+        return true;
+    }
+
+}
