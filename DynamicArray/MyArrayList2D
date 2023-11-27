@@ -36,6 +36,19 @@ public class MyArrayList2D<T extends Comparable<T>> {
         this(5, 5);
     }
 
+    public int getSize() {
+        // method: tells how many elements are in the matrix. 
+        if (currentRow == -1) {
+            return currentCol + 1;
+        }
+        return (currentRow * array[0].length) + (currentCol + 1);
+    }
+
+    public int getCapacity() {
+        //method: tells how many available spaces are in the matrix.
+        return array.length * array[0].length;
+    }
+
     public void assignRandomIntegers() {
         /*
         method: will intialize random integer values to the remaining matrix
@@ -49,8 +62,8 @@ public class MyArrayList2D<T extends Comparable<T>> {
             so due to indexing, we insert 1. 
             - then it runs the loop for the remaining spaces to insert that many values. 
          */
-        int rem = (array.length * array[0].length) - (((currentRow + 1) * array[0].length) + currentCol + 1);
-        for (int i = 0; i < rem; i++) {
+        int remainingSpace = getCapacity() - getSize();
+        for (int i = 0; i < remainingSpace; i++) {
             insert((T) (Comparable) (int) (Math.random() * 10));
         }
     }
@@ -330,7 +343,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
                     //current row, and the first value in the next row is not null, compare. 
                     this.deleteByBackward(array[i + 1][0]);
                     count++;
-                } else if (array[i][j] != null && j + 1 != array.length && array[i][j + 1] != null
+                } else if (array[i][j] != null && j + 1 != array[0].length && array[i][j + 1] != null
                         && array[i][j].compareTo(array[i][j + 1]) == 0) {
                     //else if the value and the next value in the same row is not null, compare
                     this.deleteByBackward(array[i][j + 1]);
