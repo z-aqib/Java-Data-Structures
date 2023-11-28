@@ -4,6 +4,12 @@ package LinkedListsSingly;
 // COMPLETED - ALL METHODS DONE
 public class SinglyLLH<T extends Comparable<T>> {
 
+    /*
+    this is a LINKED LIST data structure of SINGLY type i.e. all the nodes move in 
+    one direction. It is of generic type, i.e. any sort of data can be stored on 
+    the SinglyNode. It only saves the starting address of the nodes i.e. the HEAD NODE 
+    to save memory but increases time complexity in insertion. 
+     */
     private SinglyNode headNode; // saves the starting address of the linked list
     private int size; // svaes the size of the linked list
 
