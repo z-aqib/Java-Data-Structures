@@ -4,52 +4,45 @@ package DynamicArray;
 public class MyArrayList2D<T extends Comparable<T>> {
 
     /*
-    This is a dynamic (resizeable) array (also known as an array list) data structure. 
-    it is two dimensional and of generic (any) type. you can insertEnd as many values as you 
-    like as it will resize itself where needed. Each method in the class is a function 
-    that can be performed on this two dimensional array. 
+    This is a dynamic (resizeable) array (also known as an array list) data structure. it is two dimensional and of generic (any) type. you can insertEnd as many values as you like as it will resize itself where needed. Each method in the class is a function that can be performed on this two dimensional array. 
      */
     private T[][] array; // the array containing the values
-    public int currentRow; // the current row till which we have filled
-    public int currentCol; // the current column till which we have filled
+    private int currentRow; // the current row till which we have filled
+    private int currentCol; // the current column till which we have filled
     private int max_length; // the maximum length of the elements
+    private boolean sorted; // whether or not the array list is sorted
 
     public MyArrayList2D() {
         /*
-        constructor: if user doesnt specify its required size of 2d array, it will 
-        create a standard size of 5 by 5. it is a dynamic resizeable array. 
+        constructor: if user doesnt specify its required size of 2d array, it will create a standard size of 5 by 5. it is a dynamic resizeable array. 
          */
         this(5, 5);
     }
 
     public MyArrayList2D(int row, int col) {
         /*
-        constructor: create a 2d array of row,col size and intialize the currentRow 
-        and currentCol indexes to be -1 (to show that array is empty)
-        the maximum length of each element is 4 as all elements are 'null'. the maximum 
-        length will be recaculated at every element addition. 
+        constructor: calls start() which performs the necessary actions. 
          */
         start(row, col);
-        System.out.println("Two Dimension Dynamic Array[][] of " + row + " rows and " + col
-                + " columns has been created successfully. ");
+        System.out.println("Two Dimension Dynamic Array[][] of " + row + " rows and " + col + " columns has been created successfully. ");
     }
 
     private void start(int row, int col) {
+        /*
+        method: starts the class. BIG OH = 1. 
+        create a 2d array of row,col size and intialize the currentRow and currentCol indexes to be -1 (to show that array is empty)the maximum length of each element is 4 as all elements are 'null'. the maximum length will be recaculated at every element addition. 
+         */
         this.array = (T[][]) new Comparable[row][col];
         this.currentCol = this.currentRow = -1;
         this.max_length = 4;
+        this.sorted = true;
     }
 
     @Override
     public String toString() {
         /*
-        method: prints the 2d array by creating its string, first it runs two for loops: one till 
-        the currently occupied row and one for all columns. it will first get an element, display it
-        then getIndex out how many spaces to leave before the next element. here max_length will be used, 
-        if it a null element, its length is 4. but if not null, we will compute its length. 
-        using its length, we getIndex how many remaining spaces are left after we deduct from 
-        the max_length of element. then we display that many spaces using a for loop. 
-        after each row, we leave a line. 
+        method: to String() method. Big OH = m*n. 
+        prints the 2d array by creating its string, first it runs two for loops: one till the currently occupied row and one for all columns. it will first get an element, display it then getIndex out how many spaces to leave before the next element. here max_length will be used, if it a null element, its length is 4. but if not null, we will compute its length. using its length, we getIndex how many remaining spaces are left after we deduct from the max_length of element. then we display that many spaces using a for loop. after each row, we leave a line. 
          */
         String str = "";
         String str1 = "";
@@ -75,32 +68,23 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public void display() {
-        // method: displays the entire array by converting to string and displaying the string
+        // method: displays the entire array. BIG OH = M*N. by converting to string and displaying the string
         System.out.println(toString());
+        System.out.println("SUCCESS: MyArrayList has been displayed successfully. ");
     }
 
     public void insertStart(T valueToInsert) {
         /*
-        method: inserts at the start of the matrix. 
-        first it moves all the elements one ahead, then adds the new valueToInsert to the start. 
-        this is done by first finding the next null space. then it shifts the lastly 
-        inserted valueToInsert to the null space. then it shifts all the rest of the valueToInsert 
-        just one ahead until we reach (0,0). then it inserts at (0,0)
+        method: inserts at the start of the matrix. BIG OH = M*N
+        first it moves all the elements one ahead, then adds the new valueToInsert to the start. this is done by first finding the next null space. then it shifts the lastly inserted valueToInsert to the null space. then it shifts all the rest of the valueToInsert just one ahead until we reach (0,0). then it inserts at (0,0)
          */
         // first getIndex the next null space
         int[] current = {currentRow, currentCol}; // save the current space somewhere
-        int[] nextIndex;
-        do {
-            nextIndex = moveForward(currentRow, currentCol);
-            currentRow = nextIndex[0];
-            currentCol = nextIndex[1];
-            if (isFull() == true) {
-                incSize(currentRow + 2, array[0].length);
-            }
-        } while (this.array[currentRow][currentCol] != null); // we move forward until we getIndex the next empty space
+        findNextNullSpace();
         // shift the last index to this new null space
         this.array[currentRow][currentCol] = array[current[0]][current[1]];
         // now move all the values behind currentRow and currentCol one space forward
+        int[] nextIndex;
         while (isFirst(current[0], current[1]) != true) {
             nextIndex = moveBackward(current[0], current[1]);
             array[current[0]][current[1]] = array[nextIndex[0]][nextIndex[1]];
@@ -110,18 +94,14 @@ public class MyArrayList2D<T extends Comparable<T>> {
         // now that we are at the first space, insert the value
         array[current[0]][current[1]] = valueToInsert;
         max_length = Math.max(max_length, valueToInsert.toString().length()); // recompute max_length
+        sorted = false;
         System.out.println("SUCCESS: '" + valueToInsert + "' has been successfully inserted at start. ");
     }
 
     public void insertEnd(T valueToInsert) {
         /*
-        method: adds a valueToInsert to the next NULL space in the matrix. 
-        i.e. it inserts at the end of all inserted. first it checks 
-        if the matrix is full or not. then it checks if we've reached the end of the row, 
-        then increment row and go to the first column. then it checks, is that space null?
-        if yes, break the loop and place the valueToInsert at that space. if not, rerun the loop
-        to getIndex an empty null space. after the valueToInsert is placed, compare its length to the 
-        max_length and re-calculate max_length. 
+        method: adds a valueToInsert to the next NULL space in the matrix. BIG OH = M*N. 
+        i.e. it inserts at the end of all inserted. first it checks if the matrix is full or not. then it checks if we've reached the end of the row, then increment row and go to the first column. then it checks, is that space null? if yes, break the loop and place the valueToInsert at that space. if not, rerun the loop to getIndex an empty null space. after the valueToInsert is placed, compare its length to the max_length and re-calculate max_length. 
          */
         int[] nextIndex;
         // getIndex the next available space
@@ -135,45 +115,45 @@ public class MyArrayList2D<T extends Comparable<T>> {
         } while (this.array[currentRow][currentCol] != null);
         this.array[currentRow][currentCol] = valueToInsert; // put the valueToInsert at this null space
         max_length = Math.max(max_length, valueToInsert.toString().length()); // compute its max_length
+        sorted = false;
         System.out.println("SUCCESS: '" + valueToInsert + "' has been added to (" + currentRow + "," + currentCol + "). ");
     }
 
     public void insertBefore(T dataInsertBefore, T valueToInsert) {
-        // method: inserts before the first occurence of a specific data. gets index and inserts before that. 
+        // method: inserts before the first occurence of a specific data. BIG OH = M*N. gets index and inserts before that. 
         int[] index = getIndex(dataInsertBefore);
         if (index[0] == -1 || index[1] == -1) {
-            System.out.println("ERROR: Cannot be inserted before '" + dataInsertBefore + "' as it "
-                    + "not inside the ArrayList. ");
+            System.out.println("ERROR: Cannot be inserted before '" + dataInsertBefore + "' as it not inside the ArrayList. ");
             return;
         }
         insertAt(index[0], index[1], valueToInsert);
+        sorted = false;
         System.out.println("SUCCESS: '" + valueToInsert + "' inserted before '" + dataInsertBefore + "' successfully. ");
     }
 
     public void insertAfter(T dataInsertAfter, T valueToInsert) {
-        // method: inserts after the first occurence of a specific data. gets index and inserts after that. 
+        // method: inserts after the first occurence of a specific data. BIG OH = M*N. gets index and inserts after that. 
         int[] index = getIndex(dataInsertAfter);
         if (index[0] == -1 || index[1] == -1) {
-            System.out.println("ERROR: Cannot be inserted after '" + dataInsertAfter + "' as it "
-                    + "not inside the ArrayList. ");
+            System.out.println("ERROR: Cannot be inserted after '" + dataInsertAfter + "' as it not inside the ArrayList. ");
             return;
         }
         index = moveForward(index[0], index[1]);
         insertAt(index[0], index[1], valueToInsert);
+        sorted = false;
         System.out.println("SUCCESS: '" + valueToInsert + "' inserted after '" + dataInsertAfter + "' successfully. ");
     }
 
     public void insertAt(int row, int col, T valueToInsert) {
         /*
-        method: inserts at a specific index
-        if that index doesnt exist, return . if that index requires more space, increase space. 
-        if that index is null, insert normally. otherwise, find the next null space, 
-        move all the values forward, and then insert at that index. 
+        method: inserts at a specific index BIG OH = M*N;
+        if that index doesnt exist, return . if that index requires more space, increase space. if that index is null, insert normally. otherwise, find the next null space, move all the values forward, and then insert at that index. 
          */
         if (row < 0 || col < 0) {
             System.out.println("ERROR: Cannot be inserted at (" + row + "," + col + ") as it does not exist. ");
             return;
         }
+        // increase space
         if (row + 1 >= this.array.length && col + 1 >= this.array[0].length) {
             incSize(row + 2, col + 2);
         } else if (row + 1 >= this.array.length) {
@@ -181,6 +161,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
         } else if (col + 1 >= this.array[0].length) {
             incSize(this.array.length, col + 2);
         }
+        // insert value
         if (array[row][col] == null) {
             array[row][col] = valueToInsert;
         } else {
@@ -218,9 +199,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public void updateIndex(int row, int col, T valueToUpdate) {
         /*
-        method: changes/adds a valueToUpdate to a specific space in the matrix. it first checks 
-        if the matrix is big enough to have that specific address. it increases the matrix 
-        size to that address. then it modifies that address to give it that valueToUpdate. 
+        method: changes/adds a valueToUpdate to a specific space in the matrix. it first checks if the matrix is big enough to have that specific address. it increases the matrix size to that address. then it modifies that address to give it that valueToUpdate. 
          */
         if (row + 1 >= this.array.length && col + 1 >= this.array[0].length) {
             incSize(row + 2, col + 2);
@@ -256,9 +235,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public int[] getIndex(T valueToGet) {
         /*
-        method: gets a valueToGet, just run two for loops and check each address. if found, 
-        return the row,col as an int array. else if not found after checking each address, 
-        then return row,col as -1,-1 to show that the valueToGet doesnt exist in the array. 
+        method: gets a valueToGet, just run two for loops and check each address. if found, return the row,col as an int array. else if not found after checking each address, then return row,col as -1,-1 to show that the valueToGet doesnt exist in the array. 
          */
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
@@ -314,11 +291,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public T deleteIndex(int row, int col) {
         /*
-        method: deletes a specific index.
-        first it checks if the row,col coordinates are within the range 0 to array size
-        and the value at that coordinate is not null. 
-        then it moves each value backward and then finally moves currentRow, currentCol 
-        one space back. 
+        method: deletes a specific index. first it checks if the row,col coordinates are within the range 0 to array size and the value at that coordinate is not null. then it moves each value backward and then finally moves currentRow, currentCol one space back. 
          */
         if (row >= array.length || col >= array[0].length || row < 0 || col < 0 || array[row][col] == null) {
             System.out.println("ERROR: (" + row + "," + col + ") could not be deleted as it does not exist. ");
@@ -341,10 +314,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public T deleteFirstOccurence(T valueToDelete) {
         /*
-        method: this methods deletes a specific valueToDelete by backtracking all the values after 
-        it to remove the empty space, then makes the last space null. it does this by first 
-        finding the (row,col) coordinates of the deleting valueToDelete and it moves one space ahead 
-        until we come to the last null valueToDelete. 
+        method: this methods deletes a specific valueToDelete by backtracking all the values after it to remove the empty space, then makes the last space null. it does this by first finding the (row,col) coordinates of the deleting valueToDelete and it moves one space ahead until we come to the last null valueToDelete. 
          */
         int[] find = getIndex(valueToDelete);
         if (find[0] == -1) {
@@ -360,8 +330,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
             col = forwardIndex[1];
         }
         /*
-        now that ive backtracked all the values, i have to backtrack by last valueToDelete where 
-        currentCol and currentRow are standing.
+        now that ive backtracked all the values, i have to backtrack by last valueToDelete where currentCol and currentRow are standing.
          */
         forwardIndex = moveBackward(currentRow, currentCol);
         currentRow = forwardIndex[0];
@@ -377,6 +346,20 @@ public class MyArrayList2D<T extends Comparable<T>> {
         System.out.println("SUCCESS: All instances of '" + valueToDelete + "' have been deleted successfully. ");
     }
 
+    public boolean deleteByNull(T value) {
+        /*
+        method: deletes a specific value. first it finds its address of row,col using the getIndex method. if the value isnt found, return false. it makes that address null and moves the currentRow and currentCol to that position so that the next insertion is at that null value. 
+         */
+        int[] find = getIndex(value);
+        if (find[0] == -1) {
+            return false;
+        }
+        this.array[find[0]][find[1]] = null;
+        currentRow = find[0];
+        currentCol = find[1];
+        return true;
+    }
+
     public T deleteFirst() {
         // method: deletes the first value
         return deleteIndex(0, 0);
@@ -389,9 +372,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public void sortLowToHigh() {
         /*
-        method: get a value (row, col) and compare it to each value after it IF they are not null. if the value 
-        being compared with each value is LARGER, switch its places. then do this in 
-        nested for loop so that each value in the array is compared with every value. 
+        method: get a value (row, col) and compare it to each value after it IF they are not null. if the value being compared with each value is LARGER, switch its places. then do this in nested for loop so that each value in the array is compared with every value. 
          */
         // first 2 for-loops are to get a fixed value to compare
         for (int i = 0; i < array.length; i++) { // to get each row
@@ -418,10 +399,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public void removingDuplicates() {
         /*
-        method: removes duplicates. first it sorts the list. then it gets each row, 
-        column and compares it to the next value. if it is same, remove that value. 
-        then it compares that existing row, col to the previous value. if it is same, 
-        remove that value. do this repeatedly for the entire matrix. 
+        method: removes duplicates. first it sorts the list. then it gets each row, column and compares it to the next value. if it is same, remove that value. then it compares that existing row, col to the previous value. if it is same, remove that value. do this repeatedly for the entire matrix. 
          */
         sortLowToHigh();
         int count = 0;
@@ -489,10 +467,8 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     private void incSize(int row, int col) {
         /*
-        method: resizes the array. increases the array to the size specified by creating a new array of the 
-        given size and copying all the values given
-        - but before that, it checks if the size specified is lesser than the current size, 
-        so it returns. 
+        method: resizes the array. increases the array to the size specified by creating a new array of the given size and copying all the values given
+        - but before that, it checks if the size specified is lesser than the current size, so it returns. 
          */
         if (row < array.length || col < array[0].length) {
             return;
@@ -510,13 +486,8 @@ public class MyArrayList2D<T extends Comparable<T>> {
         /*
         method: will intialize random integer values to the remaining matrix
         it will first getIndex how many spaces are left in the matrix by :
-            - first it calculates the total number of spaces in the matrix by multiplying row by col
-            example its a standard 5 by 5 matrix, so 25
-            - then it calculates the occupied spaces by first multiplying the fully occupied rows 
-            by the columns and then adding the half empty column spaces. example im 
-            on (1,4) so i first getIndex fully occupied rows (1*5=5) then remaining columns in 
-            the current row (4) = 5+4=9. but actually 10 spaces are occupied in a 5 by5 matrix, 
-            so due to indexing, we insertEnd 1. 
+            - first it calculates the total number of spaces in the matrix by multiplying row by col example its a standard 5 by 5 matrix, so 25
+            - then it calculates the occupied spaces by first multiplying the fully occupied rows by the columns and then adding the half empty column spaces. example im on (1,4) so i first getIndex fully occupied rows (1*5=5) then remaining columns in the current row (4) = 5+4=9. but actually 10 spaces are occupied in a 5 by5 matrix, so due to indexing, we insertEnd 1. 
             - then it runs the loop for the remaining spaces to insertEnd that many values. 
          */
         int remainingSpace = capacity() - size();
@@ -527,12 +498,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public void appendRow(T[] rowArray) {
         /*
-        method: adds a row to the entire matrix. to insertEnd a row, it must be equal to 
-        the number of columns of the matrix. if it is equal, then proceed else return . 
-        simple logic, first create space to insertEnd another row if the array is full. then
-        simply copy paste the row array to the next row after current row. now move back 
-        to current row, so that when insertEnd function is called, it adds right where we left off
-        before the row append. 
+        method: adds a row to the entire matrix. to insertEnd a row, it must be equal to the number of columns of the matrix. if it is equal, then proceed else return . simple logic, first create space to insertEnd another row if the array is full. then simply copy paste the row array to the next row after current row. now move back to current row, so that when insertEnd function is called, it adds right where we left off before the row append. 
          */
         if (rowArray.length != this.currentCol + 1) {
             System.out.println("ERROR: This row cannot be appended as it needs to have "
@@ -551,12 +517,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public void appendCol(T[] colArray) {
         /*
-        method: adds a col to the entire matrix. to insertEnd a col, it must be equal to 
-        the number of rows of the matrix. if it is equal, then proceed else return . 
-        simple logic, first create space to insertEnd another col if the array is full. then
-        simply copy paste the col array to the next col after current col. now move back 
-        to current col, so that when insertEnd function is called, it adds right where we left off
-        before the col append. 
+        method: adds a col to the entire matrix. to insertEnd a col, it must be equal to the number of rows of the matrix. if it is equal, then proceed else return . simple logic, first create space to insertEnd another col if the array is full. then simply copy paste the col array to the next col after current col. now move back to current col, so that when insertEnd function is called, it adds right where we left off before the col append. 
          */
         if (colArray.length != this.currentRow + 1) {
             System.out.println("ERROR: This column cannot be appended as it needs to have "
@@ -606,22 +567,16 @@ public class MyArrayList2D<T extends Comparable<T>> {
         return row == array.length - 1 && col == array[0].length - 1;
     }
 
-    /*
-    public boolean deleteByNull(T value) {
-        /*
-        method: deletes a specific value. first it finds its address of row,col using 
-        the getIndex method. if the value isnt found, return false. it makes that address null 
-        and moves the currentRow and currentCol to that position so that the next insertion 
-        is at that null value. 
-         
-        int[] find = getIndex(value);
-        if (find[0] == -1) {
-            return false;
-        }
-        this.array[find[0]][find[1]] = null;
-        currentRow = find[0];
-        currentCol = find[1];
-        return true;
+    private void findNextNullSpace() {
+        int[] nextIndex;
+        do {
+            nextIndex = moveForward(currentRow, currentCol);
+            currentRow = nextIndex[0];
+            currentCol = nextIndex[1];
+            if (isFull() == true) {
+                incSize(currentRow + 2, array[0].length);
+            }
+        } while (this.array[currentRow][currentCol] != null); // we move forward until we getIndex the next empty space
     }
-     */
+
 }
