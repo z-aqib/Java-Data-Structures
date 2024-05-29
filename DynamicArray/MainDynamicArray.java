@@ -12,7 +12,7 @@ public class MainDynamicArray {
         m.display();
         m.deleteIndex(0, 0);
         m.display();
-         */
+         */ 
         System.out.println("done - tried and tested"); // you can test each method of the dynamic array's here
     }
 

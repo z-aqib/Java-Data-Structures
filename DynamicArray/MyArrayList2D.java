@@ -198,9 +198,26 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public void insertInOrder(T valueToInsert) {
-        //method: inserts in order. first it inserts normally then sorts it. 
-        insertEnd(valueToInsert);
-        sortLowToHigh();
+        //method: inserts in order. IF UNSORTED: inserts normally then sorts it. IF SORTED: finds the position to add it and does insertAt()
+        if (sorted == false) {
+            insertEnd(valueToInsert);
+            sortLowToHigh();
+        } else {
+            boolean inserted = false;
+            for (int i = 0; i < array.length; i++) {
+                for (int j = 0; j < array[i].length; j++) {
+                    if (array[i][j].compareTo(valueToInsert) == 1) {
+                        insertAt(i, j, valueToInsert);
+                        inserted = true;
+                    }
+                }
+            }
+            if (inserted == false) {
+                insertEnd(valueToInsert);
+            }
+        }
+        sorted = true;
+        System.out.println("SUCCESS: The value '" + valueToInsert + "' has been inserted in order successfully. ");
     }
 
     public void updateIndex(int row, int col, T valueToUpdate) {
@@ -402,6 +419,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
                 }
             }
         }
+        sorted = true;
         System.out.println("SUCCESS: The 2-d ArrayList has been sorted successfully. ");
     }
 
@@ -486,9 +504,11 @@ public class MyArrayList2D<T extends Comparable<T>> {
         }
         T[][] newArray = (T[][]) new Comparable[row][col];
         for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                newArray[i][j] = this.array[i][j];
-            }
+            System.arraycopy(this.array[i], 0, newArray[i], 0, array[i].length);
+//            OR YOU CAN MANUAL ARRAY COPY:
+//            for (int j = 0; j < array[i].length; j++) {
+//                newArray[i][j] = this.array[i][j];
+//            }
         }
         this.array = newArray;
     }
@@ -502,7 +522,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
         for (int i = 0; i < remainingSpace; i++) {
             insertEnd((T) (Comparable) (int) (Math.random() * 10));
         }
-        System.out.println("SUCCESS: MyArrayList2D has been initialized with "+remainingSpace+" random integers. ");
+        System.out.println("SUCCESS: MyArrayList2D has been initialized with " + remainingSpace + " random integers. ");
     }
 
     public void appendRow(T[] rowArray) {
@@ -516,9 +536,11 @@ public class MyArrayList2D<T extends Comparable<T>> {
         if (++this.currentRow == this.array.length) {
             incSize(this.array.length + 1, this.array[0].length);
         }
-        for (int i = 0; i < rowArray.length; i++) {
-            array[currentRow][i] = rowArray[i];
-        }
+        System.arraycopy(rowArray, 0, array[currentRow], 0, rowArray.length);
+//        OR YOU CAN MANUAL ARRAY COPY:
+//        for (int i = 0; i < rowArray.length; i++) {
+//            array[currentRow][i] = rowArray[i];
+//        }
         currentRow--;
         System.out.println("SUCCESS: The row has been appended successfully. ");
     }

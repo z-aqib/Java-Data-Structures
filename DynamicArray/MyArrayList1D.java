@@ -372,6 +372,10 @@ public class MyArrayList1D<T extends Comparable<T>> {
         method: sorts the array. BIG OH = n^2. 
         getValue a value and compare it to each value after it IF they are not null. if the value being compared with each value is LARGER, switch its places. then do this in nested for loop so that each value in the array is compared with every value. 
          */
+        if (sorted == true) {
+            System.out.println("MyArrayList1D is already sorted. ");
+            return;
+        }
         for (int i = 0; i < this.array.length; i++) {
             for (int j = i + 1; j < this.array.length; j++) {
                 if (this.array[i] != null && this.array[j] != null && this.array[i].compareTo(this.array[j]) == 1) {
@@ -445,9 +449,11 @@ public class MyArrayList1D<T extends Comparable<T>> {
         it creates a new array with larger size, copies each value, then assigns the new array to the array. 
          */
         T[] newArray = (T[]) new Comparable[incrementSize];
-        for (int i = 0; i < capacity(); i++) {
-            newArray[i] = this.array[i];
-        }
+        System.arraycopy(this.array, 0, newArray, 0, capacity());
+//        OR, YOU CAN MANUAL COPY: 
+//        for (int i = 0; i < capacity(); i++) {
+//            newArray[i] = this.array[i];
+//        }
         this.array = newArray;
     }
 
@@ -457,7 +463,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
         for (int i = 0; i < remainingSpace; i++) {
             insertEnd((T) (Comparable) (int) (Math.random() * 10));
         }
-        System.out.println("SUCCESS: MyArrayList has been assigned random integers successfully. ");
+        System.out.println("SUCCESS: MyArrayList has been assigned " + remainingSpace + " random integers successfully. ");
     }
 
 }
