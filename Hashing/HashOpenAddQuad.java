@@ -63,7 +63,7 @@ public class HashOpenAddQuad<T extends Comparable<T>> {
 
     public int insert(Comparable<T> valueToBeInserted) {
         /*
-        method: inserts a value in the table using its hash() value. call strToInt(v) and change the value to string, save return value in sum. call Hash(sum) and save return value in sum if (no collision on hash value) then place value else call rehash function until empty cell found also compute number of collisions on insertion of each word. IF a significant number of iterations have been run 
+        method: inserts a value in the table using its hash() value. call strToInt(v) and change the value to string, save return value in sum. call Hash(sum) and save return value in sum if (no collision on hash value) then place value else call rehash function until empty cell found also compute number of collisions on insertion of each word. IF a significant number of iterations have been run, it throws error that it cannot be inserted. RETURNS: number of iterations to insert that value.  
          */
         if (countOccupied == table.length) {
             System.out.println("ERROR: Cannot be inserted as hash table is full. ");
@@ -87,10 +87,7 @@ public class HashOpenAddQuad<T extends Comparable<T>> {
 
     public boolean delete(Comparable<T> valueToBeDeleted) {
         /*
-        method: delete word from hash table
-        first search for the value. if found, then proceed deletion. 
-        run a loop and keep checking if the hash() and rehash() is equal to the value 
-        that is being deleted. if yes, make that value null. 
+        method: delete word from hash table. first search for the value. if found, then proceed deletion. run a loop and keep checking if the hash() and rehash() is equal to the value that is being deleted. if yes, make that value null. 
          */
         if (search(valueToBeDeleted) == true) {
             int sum = strToInt(valueToBeDeleted.toString());
@@ -102,13 +99,12 @@ public class HashOpenAddQuad<T extends Comparable<T>> {
             if (table[sum] != null && table[sum].compareTo((T) valueToBeDeleted) == 0) {
                 table[sum] = null;
                 countOccupied--;
-                System.out.println("SUCCESS: '" + valueToBeDeleted + "' is deleted successfully. ");
+                System.out.println("SUCCESS: '" + valueToBeDeleted + "' is deleted successfully at index "+sum+". ");
                 return true;
             }
         }
         System.out.println("ERROR: '" + valueToBeDeleted.toString() + "' cannot be deleted as it is not found. ");
         return false;
-
     }
 
     public boolean search(Comparable<T> valueToBeSearched) {
