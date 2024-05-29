@@ -3,7 +3,7 @@ package Hashing;
 public class HashOpenAddQuad<T extends Comparable<T>> {
 
     /*
-    This is a hash table data structure. it is NOT resizeable/dynamic. the size is defined at the start. This is used to retrive values in 0(1) and search in 0(1). but this is not always the case - as this hash table is of OPEN ADDRESSING (QUADRATIC). in this, each data value to be added or retrieved gets an index computed based on their data, and it maps it to that index. but, if the index has already been asisgned to a data, the index is Re-Hashed (recomputed) until an empty index is found. 
+    This is a hash table data structure. it is NOT resizeable/dynamic. the size is defined at the start. This is used to retrive values in 0(1) and find in 0(1). but this is not always the case - as this hash table is of OPEN ADDRESSING (QUADRATIC). in this, each data value to be added or retrieved gets an index computed based on their data, and it maps it to that index. but, if the index has already been asisgned to a data, the index is Re-Hashed (recomputed) until an empty index is found. 
      */
     private Comparable<T>[] table; // the table of values
     private int countOccupied; // the number of occupied values
@@ -85,31 +85,9 @@ public class HashOpenAddQuad<T extends Comparable<T>> {
         return i;
     }
 
-    public boolean delete(Comparable<T> valueToBeDeleted) {
+    public boolean find(Comparable<T> valueToBeSearched) {
         /*
-        method: delete word from hash table. first search for the value. if found, then proceed deletion. run a loop and keep checking if the hash() and rehash() is equal to the value that is being deleted. if yes, make that value null. 
-         */
-        if (search(valueToBeDeleted) == true) {
-            int sum = strToInt(valueToBeDeleted.toString());
-            sum = Hash(sum);
-            int i = 0;
-            while (table[sum] == null || table[sum].compareTo((T) valueToBeDeleted) != 0) {
-                sum = Rehash(sum, ++i);
-            }
-            if (table[sum] != null && table[sum].compareTo((T) valueToBeDeleted) == 0) {
-                table[sum] = null;
-                countOccupied--;
-                System.out.println("SUCCESS: '" + valueToBeDeleted + "' is deleted successfully at index "+sum+". ");
-                return true;
-            }
-        }
-        System.out.println("ERROR: '" + valueToBeDeleted.toString() + "' cannot be deleted as it is not found. ");
-        return false;
-    }
-
-    public boolean search(Comparable<T> valueToBeSearched) {
-        /*
-        method: search word in a hash table
+        method: find word in a hash table
         first it changes the object to string, computes its sum, then computes its 
         hash() value. then it iteratively searches for that value at 
          */
@@ -124,6 +102,28 @@ public class HashOpenAddQuad<T extends Comparable<T>> {
             return true;
         }
         System.out.println("ERROR: '" + valueToBeSearched.toString() + "' could not be found. ");
+        return false;
+    }
+
+    public boolean delete(Comparable<T> valueToBeDeleted) {
+        /*
+        method: delete word from hash table. first find for the value. if found, then proceed deletion. run a loop and keep checking if the hash() and rehash() is equal to the value that is being deleted. if yes, make that value null. 
+         */
+        if (find(valueToBeDeleted) == true) {
+            int sum = strToInt(valueToBeDeleted.toString());
+            sum = Hash(sum);
+            int i = 0;
+            while (table[sum] == null || table[sum].compareTo((T) valueToBeDeleted) != 0) {
+                sum = Rehash(sum, ++i);
+            }
+            if (table[sum] != null && table[sum].compareTo((T) valueToBeDeleted) == 0) {
+                table[sum] = null;
+                countOccupied--;
+                System.out.println("SUCCESS: '" + valueToBeDeleted + "' is deleted successfully at index " + sum + ". ");
+                return true;
+            }
+        }
+        System.out.println("ERROR: '" + valueToBeDeleted.toString() + "' cannot be deleted as it is not found. ");
         return false;
     }
 
