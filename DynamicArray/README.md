@@ -9,3 +9,11 @@ This data structures supports **all** data types, whether it be a built-in data 
 There are two types of MyArrayLists,
 * One-Dimensional (ex. int[], char[], String[])
 * Two-Dimensional (ex. int[][], char[][], String[][])
+The resizable unlimited option is available for **both**. 
+
+## Functions in MyArrayList
+This table lists the possible functions in MyArrayList, how they were implemented and what their time complexity is. 
+
+| Function Name | MyArrayList1D | Implementation | MyArrayList2D | Implementation |
+| ------------- | ------------- | -------------- | ------------- | -------------- |
+| constructor() |     *O(1)*    |                |               |                |
