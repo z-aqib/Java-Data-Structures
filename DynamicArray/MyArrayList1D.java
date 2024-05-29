@@ -419,6 +419,11 @@ public class MyArrayList1D<T extends Comparable<T>> {
         return this.array[0];
     }
 
+    public Comparable<T>[] toArray() {
+        // method: converts the matrix to a single dimensional array
+        return array;
+    }
+
     public void reverse() {
         /*
         method: reverses the values of the array. space and time complexity is n/2

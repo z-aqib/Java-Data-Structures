@@ -245,7 +245,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
          */
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
-                if (array[i][j].compareTo(valueToGet) == 0) {
+                if (array[i][j] != null && array[i][j].compareTo(valueToGet) == 0) {
                     System.out.println("SUCCESS: Found '" + valueToGet + "' at (" + i + ", " + j + "). ");
                     return new int[]{i, j};
                 }
@@ -307,14 +307,17 @@ public class MyArrayList2D<T extends Comparable<T>> {
             int[] forwardIndex;
             T deletingValue = array[row][col];
             while (array[row][col] != null) {
+                // get each element after the deletingValue and put its value to the previous position
                 forwardIndex = moveForward(row, col);
                 array[row][col] = array[forwardIndex[0]][forwardIndex[1]];
                 row = forwardIndex[0];
                 col = forwardIndex[1];
             }
+            // now move the current pointer one position back
             forwardIndex = moveBackward(currentRow, currentCol);
             currentRow = forwardIndex[0];
             currentCol = forwardIndex[1];
+            System.out.println("SUCCESS: The index (" + row + "," + col + ") had value '" + deletingValue + "' and was deleted successfully. ");
             return deletingValue;
         }
     }
@@ -325,45 +328,39 @@ public class MyArrayList2D<T extends Comparable<T>> {
          */
         int[] find = getIndex(valueToDelete);
         if (find[0] == -1) {
+            System.out.println("ERROR: The value '" + valueToDelete + "' does not exist in MyArrayList2D. ");
             return null;
         }
-        int col = find[1];
-        int row = find[0];
-        int[] forwardIndex;
-        while (array[row][col] != null) {
-            forwardIndex = moveForward(row, col);
-            array[row][col] = array[forwardIndex[0]][forwardIndex[1]];
-            row = forwardIndex[0];
-            col = forwardIndex[1];
-        }
-        /*
-        now that ive backtracked all the values, i have to backtrack by last valueToDelete where currentCol and currentRow are standing.
-         */
-        forwardIndex = moveBackward(currentRow, currentCol);
-        currentRow = forwardIndex[0];
-        currentCol = forwardIndex[1];
-        return valueToDelete;
+        return deleteIndex(find[0], find[1]);
     }
 
     public void deleteAllOccurences(T valueToDelete) {
-        // method: deletes all the occurences of a specific value - it runs until the value can no longer be found
+        // method: deletes all the occurences of a specific value - it runs until the value can no longer be found. one way to do this is to run deleteFirstOccurences() until we can no longer find that value. but it would backtrack and shift values after EVERY deletion. a better way is to delete them all at once and then backtrack ONCE. Another way could be that the all the occurences would be made null without backtracking. 
+//        WAY ONE
+//        while (find(valueToDelete) == true) {
+//            deleteFirstOccurence(valueToDelete);
+//        }
+//        WAY TWO -- thinking
+//        WAY THREE 
         while (find(valueToDelete) == true) {
-            deleteFirstOccurence(valueToDelete);
+            deleteByNull(valueToDelete);
         }
         System.out.println("SUCCESS: All instances of '" + valueToDelete + "' have been deleted successfully. ");
     }
 
-    public boolean deleteByNull(T value) {
+    public boolean deleteByNull(T valueToDelete) {
         /*
-        method: deletes a specific value. first it finds its address of row,col using the getIndex method. if the value isnt found, return false. it makes that address null and moves the currentRow and currentCol to that position so that the next insertion is at that null value. 
+        method: deletes a specific valueToDelete. first it finds its address of row,col using the getIndex method. if the valueToDelete isnt found, return false. it makes that address null and moves the currentRow and currentCol to that position so that the next insertion is at that null valueToDelete. 
          */
-        int[] find = getIndex(value);
+        int[] find = getIndex(valueToDelete);
         if (find[0] == -1) {
+            System.out.println("ERROR: The value '" + valueToDelete + "' cannot be deleted as it does not exist in MyArrayList2D. ");
             return false;
         }
         this.array[find[0]][find[1]] = null;
         currentRow = find[0];
         currentCol = find[1];
+        System.out.println("SUCCESS: The value '" + valueToDelete + "' has been deleted successfully by making it null. ");
         return true;
     }
 
@@ -381,6 +378,10 @@ public class MyArrayList2D<T extends Comparable<T>> {
         /*
         method: get a value (row, col) and compare it to each value after it IF they are not null. if the value being compared with each value is LARGER, switch its places. then do this in nested for loop so that each value in the array is compared with every value. 
          */
+        if (sorted == true) {
+            System.out.println("MyArrayList2D is already sorted. ");
+            return;
+        }
         // first 2 for-loops are to get a fixed value to compare
         for (int i = 0; i < array.length; i++) { // to get each row
             for (int j = 0; j < array[i].length; j++) { // to get each column
@@ -408,7 +409,9 @@ public class MyArrayList2D<T extends Comparable<T>> {
         /*
         method: removes duplicates. first it sorts the list. then it gets each row, column and compares it to the next value. if it is same, remove that value. then it compares that existing row, col to the previous value. if it is same, remove that value. do this repeatedly for the entire matrix. 
          */
-        sortLowToHigh();
+        if (sorted == false) {
+            sortLowToHigh();
+        }
         int count = 0;
         int[] forward;
         int[] backward;
@@ -416,17 +419,15 @@ public class MyArrayList2D<T extends Comparable<T>> {
             for (int j = 0; j < array[i].length; j++) {
                 if (isLast(i, j) == false) {
                     forward = moveForward(i, j); // forward comparision (value with its after value)
-                    if (array[i][j] != null && array[forward[0]][forward[1]] != null
-                            && array[i][j].compareTo(array[forward[0]][forward[1]]) == 0) {
-                        this.deleteFirstOccurence(array[forward[0]][forward[1]]);
+                    if (array[i][j] != null && array[forward[0]][forward[1]] != null && array[i][j].compareTo(array[forward[0]][forward[1]]) == 0) {
+                        deleteIndex(forward[0], forward[1]);
                         count++;
                     }
                 }
                 if (isFirst(i, j) == false) {
                     backward = moveBackward(i, j);// backward comparision (value with its previous value)
-                    if (array[i][j] != null && array[backward[0]][backward[1]] != null
-                            && array[i][j].compareTo(array[backward[0]][backward[1]]) == 0) {
-                        this.deleteFirstOccurence(array[i][j]);
+                    if (array[i][j] != null && array[backward[0]][backward[1]] != null && array[i][j].compareTo(array[backward[0]][backward[1]]) == 0) {
+                        deleteIndex(i, j);
                         j--; // move it back for recomparision
                         count++;
                     }
@@ -438,13 +439,17 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public T findMax() {
         //method: returns the highest value. first it sorts low to high then returns the last value
-        sortLowToHigh();
+        if (sorted == false) {
+            sortLowToHigh();
+        }
         return array[currentRow][currentCol];
     }
 
     public T findMin() {
         //method: returns the lowest value. first it sorts low to high then returns the first value
-        sortLowToHigh();
+        if (sorted == false) {
+            sortLowToHigh();
+        }
         return array[0][0];
     }
 
@@ -462,14 +467,14 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public void reverse() {
         // method: reverses the array by swapping the first and last values until the middle
-        for (int[] forward = {0, 0}, backward = {currentRow, currentCol},
-                counter = {0}; counter[0] != (size() / 2); counter[0]++) {
+        for (int[] forward = {0, 0}, backward = {currentRow, currentCol}, counter = {0}; counter[0] != (size() / 2); counter[0]++) {
             T temp = array[forward[0]][forward[1]];
             array[forward[0]][forward[1]] = array[backward[0]][backward[1]];
             array[backward[0]][backward[1]] = temp;
             forward = moveForward(forward[0], forward[1]);
             backward = moveBackward(backward[0], backward[1]);
         }
+        System.out.println("SUCCESS: MyArrayList2D has been reversed successfully. ");
     }
 
     private void incSize(int row, int col) {
@@ -491,15 +496,13 @@ public class MyArrayList2D<T extends Comparable<T>> {
     public void assignRandomIntegers() {
         /*
         method: will intialize random integer values to the remaining matrix
-        it will first getIndex how many spaces are left in the matrix by :
-            - first it calculates the total number of spaces in the matrix by multiplying row by col example its a standard 5 by 5 matrix, so 25
-            - then it calculates the occupied spaces by first multiplying the fully occupied rows by the columns and then adding the half empty column spaces. example im on (1,4) so i first getIndex fully occupied rows (1*5=5) then remaining columns in the current row (4) = 5+4=9. but actually 10 spaces are occupied in a 5 by5 matrix, so due to indexing, we insertEnd 1. 
-            - then it runs the loop for the remaining spaces to insertEnd that many values. 
+        it will first getIndex how many spaces are left in the matrix by : first it calculates the total number of spaces in the matrix by multiplying row by col example its a standard 5 by 5 matrix, so 25, then it calculates the occupied spaces by first multiplying the fully occupied rows by the columns and then adding the half empty column spaces. example im on (1,4) so i first getIndex fully occupied rows (1*5=5) then remaining columns in the current row (4) = 5+4=9. but actually 10 spaces are occupied in a 5 by5 matrix, so due to indexing, we insertEnd 1. then it runs the loop for the remaining spaces to insertEnd that many values. 
          */
         int remainingSpace = capacity() - size();
         for (int i = 0; i < remainingSpace; i++) {
             insertEnd((T) (Comparable) (int) (Math.random() * 10));
         }
+        System.out.println("SUCCESS: MyArrayList2D has been initialized with "+remainingSpace+" random integers. ");
     }
 
     public void appendRow(T[] rowArray) {
@@ -507,8 +510,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
         method: adds a row to the entire matrix. to insertEnd a row, it must be equal to the number of columns of the matrix. if it is equal, then proceed else return . simple logic, first create space to insertEnd another row if the array is full. then simply copy paste the row array to the next row after current row. now move back to current row, so that when insertEnd function is called, it adds right where we left off before the row append. 
          */
         if (rowArray.length != this.currentCol + 1) {
-            System.out.println("ERROR: This row cannot be appended as it needs to have "
-                    + this.currentCol + 1 + " columns but it has " + rowArray.length + " columns. ");
+            System.out.println("ERROR: This row cannot be appended as it needs to have " + this.currentCol + 1 + " columns but it has " + rowArray.length + " columns. ");
             return;
         }
         if (++this.currentRow == this.array.length) {
@@ -526,8 +528,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
         method: adds a col to the entire matrix. to insertEnd a col, it must be equal to the number of rows of the matrix. if it is equal, then proceed else return . simple logic, first create space to insertEnd another col if the array is full. then simply copy paste the col array to the next col after current col. now move back to current col, so that when insertEnd function is called, it adds right where we left off before the col append. 
          */
         if (colArray.length != this.currentRow + 1) {
-            System.out.println("ERROR: This column cannot be appended as it needs to have "
-                    + this.array.length + " rows but it has " + colArray.length + " rows. ");
+            System.out.println("ERROR: This column cannot be appended as it needs to have " + this.array.length + " rows but it has " + colArray.length + " rows. ");
             return;
         }
         if (++this.currentCol == this.array[0].length) {
@@ -542,12 +543,13 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     private int[] moveForward(int row, int col) {
         // method: computes the coordinates of the next index after row,col
-        if (row == -1) {
+        if (row == -1) { // if we are at the first index, make row a valid number
             row = 0;
         }
+        // if we are at the end of row, shift to a new row and make col 0
         if (col + 1 == array[0].length) {
             return new int[]{row + 1, 0};
-        } else {
+        } else { // else move one digit after col normally on same row
             return new int[]{row, col + 1};
         }
     }
@@ -564,16 +566,17 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     private boolean isFirst(int row, int col) {
-        // checks if the given index is the first index or not
+        // method: checks if the given index is the first index or not
         return row == 0 & col == 0;
     }
 
     private boolean isLast(int row, int col) {
-        // checks if the given index is the last index or not
+        // method: checks if the given index is the last index or not
         return row == array.length - 1 && col == array[0].length - 1;
     }
 
     private void assignNextNullSpace() {
+        // method: finds the next null space in the array and assigns CurrentRow CurrentCol its position. this is done by getting the current positions and moving ahead until we get a null space. if while moving ahead we finish the array space, then we increase the array space. 
         int[] nextIndex;
         do {
             nextIndex = moveForward(currentRow, currentCol);
