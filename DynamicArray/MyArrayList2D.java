@@ -13,16 +13,12 @@ public class MyArrayList2D<T extends Comparable<T>> {
     private boolean sorted; // whether or not the array list is sorted
 
     public MyArrayList2D() {
-        /*
-        constructor: if user doesnt specify its required size of 2d array, it will create a standard size of 5 by 5. it is a dynamic resizeable array. 
-         */
+        // constructor: if user doesnt specify its required size of 2d array, it will create a standard size of 5 by 5. it is a dynamic resizeable array. 
         this(5, 5);
     }
 
     public MyArrayList2D(int row, int col) {
-        /*
-        constructor: calls start() which performs the necessary actions. 
-         */
+        // constructor: calls start() which performs the necessary actions. 
         start(row, col);
         System.out.println("Two Dimension Dynamic Array[][] of " + row + " rows and " + col + " columns has been created successfully. ");
     }
@@ -78,23 +74,28 @@ public class MyArrayList2D<T extends Comparable<T>> {
         method: inserts at the start of the matrix. BIG OH = M*N
         first it moves all the elements one ahead, then adds the new valueToInsert to the start. this is done by first finding the next null space. then it shifts the lastly inserted valueToInsert to the null space. then it shifts all the rest of the valueToInsert just one ahead until we reach (0,0). then it inserts at (0,0)
          */
-        // first getIndex the next null space
-        int[] current = {currentRow, currentCol}; // save the current space somewhere
-        findNextNullSpace();
-        // shift the last index to this new null space
-        this.array[currentRow][currentCol] = array[current[0]][current[1]];
-        // now move all the values behind currentRow and currentCol one space forward
-        int[] nextIndex;
-        while (isFirst(current[0], current[1]) != true) {
-            nextIndex = moveBackward(current[0], current[1]);
-            array[current[0]][current[1]] = array[nextIndex[0]][nextIndex[1]];
-            current[0] = nextIndex[0];
-            current[1] = nextIndex[1];
+        // if array is null, insert at the head normally
+        if (currentRow == -1) {
+            array[++currentRow][++currentCol] = valueToInsert;
+        } else {
+            // first getIndex the next null space
+            int[] current = {currentRow, currentCol}; // save the current space somewhere
+            findNextNullSpace();
+            // shift the last index to this new null space
+            this.array[currentRow][currentCol] = array[current[0]][current[1]];
+            // now move all the values behind currentRow and currentCol one space forward
+            int[] nextIndex;
+            while (isFirst(current[0], current[1]) != true) {
+                nextIndex = moveBackward(current[0], current[1]);
+                array[current[0]][current[1]] = array[nextIndex[0]][nextIndex[1]];
+                current[0] = nextIndex[0];
+                current[1] = nextIndex[1];
+            }
+            // now that we are at the first space, insert the value
+            array[current[0]][current[1]] = valueToInsert;
+            max_length = Math.max(max_length, valueToInsert.toString().length()); // recompute max_length
+            sorted = false;
         }
-        // now that we are at the first space, insert the value
-        array[current[0]][current[1]] = valueToInsert;
-        max_length = Math.max(max_length, valueToInsert.toString().length()); // recompute max_length
-        sorted = false;
         System.out.println("SUCCESS: '" + valueToInsert + "' has been successfully inserted at start. ");
     }
 
@@ -467,8 +468,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     private void incSize(int row, int col) {
         /*
-        method: resizes the array. increases the array to the size specified by creating a new array of the given size and copying all the values given
-        - but before that, it checks if the size specified is lesser than the current size, so it returns. 
+        method: resizes the array. increases the array to the size specified by creating a new array of the given size and copying all the values given but before that, it checks if the size specified is lesser than the current size, so it returns. 
          */
         if (row < array.length || col < array[0].length) {
             return;
