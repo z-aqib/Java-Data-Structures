@@ -14,6 +14,7 @@ The resizable unlimited option is available for **both**.
 ## Functions in MyArrayList
 This table lists the possible functions in MyArrayList, how they were implemented and what their time complexity is. 
 
-| Function Name | MyArrayList1D | Implementation | MyArrayList2D | Implementation |
-| ------------- | ------------- | -------------- | ------------- | -------------- |
-| constructor() |     *O(1)*    |                |               |                |
+| Function Name | MyArrayList1D                    | MyArrayList2D                    |
+|               | Time Complexity | Implementation | Time Complexity | Implementation |
+| ------------- | --------------- | -------------- | --------------- | -------------- |
+| constructor() |     *O(1)*      |                |                 |                |
