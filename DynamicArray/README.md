@@ -28,6 +28,7 @@ This table lists the possible functions in MyArrayList, how they were implemente
 | 9     | **insertAt**(index, dataInsert): boolean (where *index* is *row, col* for 2D) | *O(n)* | if *index* is null, it is *O(1)* as placed directly, else shift all elements one index forward and place *dataInsert* at *index* | *O(m * n)* | if *index* is null, it is placed directly, else shift all elements one index forward and place *dataInsert* at *index* |
 | 10    | **insertInOrder**(data): void | *O(n)* | if sorted, find correct position and call *insertAt()* else call *insertEnd()* and run *sortInOrder()* | *O(m * n)* | if sorted, find correct position and call *insertAt()*, else call *insertEnd()* and run *sortInOrder()* |
 | 11    | **updateIndex**(index, dataUpdate): boolean (where *index* is *row, col* for 2D) | *O(1)* | update *index* with *dataUpdate* | *O(1)* | update *index* with *dataUpdate* |
-| 12    | **find**(dataFind): boolean | *O(n)* | traverses the array[] and returns if found or not | *O(m * n)* | traverses the array[][] and returns if found or not |
+| 12    | **find**(data): boolean | *O(n)* | traverses the array[] and returns if found or not | *O(m * n)* | traverses the array[][] and returns if found or not |
 | 13    | **getValue**(index): T (where *index* is *row, col* for 2D) | *O(1)* | returns the data at *index* | *O(1)* | returns the data at *index* |
-| 14    | **getIndex**(data): int (it will return int[] for 2D) | *O(n)* | traverses the array[] to find the data and returns its index found on | *O( m * n)* | traverses the array[][] to find the *data* and returns the index (row,col) at which it was found |
+| 14    | **getIndex**(data): int (it will return int[] for 2D) | *O(n)* | traverses the array[] to find the data and returns its index found on | *O(m * n)* | traverses the array[][] to find the *data* and returns the index (row,col) at which it was found |
+
