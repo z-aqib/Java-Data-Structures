@@ -24,3 +24,5 @@ This table lists the possible functions in MyArrayList, how they were implemente
 | toString(): String | *O(n)* | displays each non-null element | *O(m * n)* | displays all the m*n elements |
 | display(): void | *O(n)* | prints toString() | *O(m * n)* | prints toString() |
 | insertStart(data): void | *O(n)* | moves each element one forward and places *data* at index 0 | *O(m * n)* | moves each element one forward and places *data* at index (0,0) |
+| insertEnd(data): void | *O(n)* | call *incSize()* if array is full and place *data* at _pointerIndex_ | *O(m * n)* | call *incSize()* if array is full and place *data* at _pointerIndex_ |
+| insertBefore(dataBefore, dataInsert): boolean | shift all the elements after and including *dataBefore* and place *dataInsert* before |

@@ -63,8 +63,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
 
     public void insertStart(T valueToInsert) {
         /*
-        method: it inserts values at the start. BIG OH = n. 
-        this is done by moving all the values one space forward and then inserting the value at the first index. if the array is already full, we will first increase its size then shift the values. 
+        method: it inserts values at the start. BIG OH = n. this is done by moving all the values one space forward and then inserting the value at the first index. if the array is already full, we will first increase its size then shift the values. 
          */
         if (++pointerIndex == array.length) {
             incSize(array.length * 2);
@@ -79,8 +78,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
 
     public void insertEnd(T valueToInsert) {
         /*
-        method: inserting values to the array. BIG OH = n. 
-        if array is full, double the size; after that add the element. else add normally. 
+        method: inserting values to the array. BIG OH = n. if array is full, double the size; after that add the element. else add normally. 
          */
         if (size() == capacity()) {
             incSize(capacity() * 2);
@@ -90,7 +88,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
         System.out.println("SUCCESS: Value '" + valueToInsert.toString() + "' has been added to the end successfully. ");
     }
 
-    public void insertBefore(T dataBeforeInserting, T valueToInsert) {
+    public boolean insertBefore(T dataBeforeInserting, T valueToInsert) {
         /*
         method: inserts a value before a specific value. (first occurence of that value) BIG OH = n.
         first it finds the index at which that value exists, if it doesnt exist it does not insert, else move all the values including the index one forward, then insert the value at the index. 
@@ -98,7 +96,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
         int index = getIndex(dataBeforeInserting);
         if (index == -1) {
             System.out.println("ERROR: '" + valueToInsert + "' cannot be inserted before '" + dataBeforeInserting + "' as MyArrayList does not contain it. ");
-            return;
+            return false;
         }
         if (size() == capacity()) {
             incSize(capacity() * 2);
@@ -109,6 +107,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
         array[index] = valueToInsert;
         sorted = false;
         System.out.println("SUCCESS: '" + valueToInsert + "' inserted before '" + dataBeforeInserting + "' successfully. ");
+        return true;
     }
 
     public void insertAfter(T dataAfterInserting, T valueToInsert) {
