@@ -110,15 +110,14 @@ public class MyArrayList1D<T extends Comparable<T>> {
         return true;
     }
 
-    public void insertAfter(T dataAfterInserting, T valueToInsert) {
+    public boolean insertAfter(T dataAfterInserting, T valueToInsert) {
         /*
-        method: inserts a value after a specific value. (first occurence of that value) BIG OH = n.
-        first it finds the index at which that value exists, if it doesnt exist it does not insert, else move all the values not including the index one forward, then insert the value at index+1. 
+        method: inserts a value after a specific value. (first occurence of that value) BIG OH = n. first it finds the index at which that value exists, if it doesnt exist it does not insert, else move all the values not including the index one forward, then insert the value at index+1. 
          */
         int index = getIndex(dataAfterInserting);
         if (index == -1) {
             System.out.println("ERROR: '" + valueToInsert + "' cannot be inserted after '" + dataAfterInserting + "' as MyArrayList does not contain it. ");
-            return;
+            return false;
         }
         if (size() == capacity()) {
             incSize(capacity() * 2);
@@ -129,16 +128,17 @@ public class MyArrayList1D<T extends Comparable<T>> {
         array[index + 1] = valueToInsert;
         sorted = false;
         System.out.println("SUCCESS: '" + valueToInsert + "' inserted after '" + dataAfterInserting + "' successfully. ");
+        return true;
     }
 
-    public void insertAt(int indexToInsertAt, T valueToInsert) {
+    public boolean insertAt(int indexToInsertAt, T valueToInsert) {
         /*
         method: inserts a value at a specific index. BIG OH = n. 
         first it increases the array if its full. it checks the indexToInsertAt, if its valid, it runs further. first it checks, if the indexToInsertAt we are inserting on is just the next indexToInsertAt after where our currentPointer is, we will insert at end normally. otherwise, if the indexToInsertAt which we have to insert at is between our inserted elements, we will move them one forward and insert at that indexToInsertAt. otherwise, if we arent near our currentPointer, then insert at that indexToInsertAt and increment extra indexes. 
          */
         if (indexToInsertAt < 0) {
             System.out.println("ERROR: Index to be updated is lesser than 0 and does not exist. ");
-            return;
+            return false;
         }
         if (indexToInsertAt >= capacity()) {
             incSize(indexToInsertAt + 1);
@@ -156,6 +156,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
         }
         sorted = false;
         System.out.println("SUCCESS: '" + valueToInsert + "' inserted at '" + indexToInsertAt + "' successfully. ");
+        return true;
     }
 
     public void insertInOrder(T valueToInsert) {

@@ -132,39 +132,40 @@ public class MyArrayList2D<T extends Comparable<T>> {
         System.out.println("SUCCESS: '" + valueToInsert + "' has been added to (" + currentRow + "," + currentCol + "). ");
     }
 
-    public void insertBefore(T dataInsertBefore, T valueToInsert) {
+    public boolean insertBefore(T dataInsertBefore, T valueToInsert) {
         // method: inserts before the first occurence of a specific data. BIG OH = M*N. gets index and inserts before that. 
         int[] index = getIndex(dataInsertBefore);
         if (index[0] == -1 || index[1] == -1) {
             System.out.println("ERROR: Cannot be inserted before '" + dataInsertBefore + "' as it not inside the ArrayList. ");
-            return;
+            return false;
         }
         insertAt(index[0], index[1], valueToInsert);
         sorted = false;
         System.out.println("SUCCESS: '" + valueToInsert + "' inserted before '" + dataInsertBefore + "' successfully. ");
+        return true;
     }
 
-    public void insertAfter(T dataInsertAfter, T valueToInsert) {
-        // method: inserts after the first occurence of a specific data. BIG OH = M*N. gets index and inserts after that. 
+    public boolean insertAfter(T dataInsertAfter, T valueToInsert) {
+        // method: inserts after the first occurence of a specific data. BIG OH = M*N. gets index and inserts after that.
         int[] index = getIndex(dataInsertAfter);
         if (index[0] == -1 || index[1] == -1) {
             System.out.println("ERROR: Cannot be inserted after '" + dataInsertAfter + "' as it not inside the ArrayList. ");
-            return;
+            return false;
         }
         index = moveForward(index[0], index[1]);
         insertAt(index[0], index[1], valueToInsert);
         sorted = false;
         System.out.println("SUCCESS: '" + valueToInsert + "' inserted after '" + dataInsertAfter + "' successfully. ");
+        return true;
     }
 
-    public void insertAt(int row, int col, T valueToInsert) {
+    public boolean insertAt(int row, int col, T valueToInsert) {
         /*
-        method: inserts at a specific index BIG OH = M*N;
-        if that index doesnt exist, return . if that index requires more space, increase space. if that index is null, insert normally. otherwise, find the next null space, move all the values forward, and then insert at that index. 
+        method: inserts at a specific index BIG OH = M*N; if that index doesnt exist, return . if that index requires more space, increase space. if that index is null, insert normally. otherwise, find the next null space, move all the values forward, and then insert at that index. 
          */
         if (row < 0 || col < 0) {
-            System.out.println("ERROR: Cannot be inserted at (" + row + "," + col + ") as it does not exist. ");
-            return;
+            System.out.println("ERROR: Cannot be inserted at (" + row + "," + col + ") as it is invalid. ");
+            return false;
         }
         // increase space
         if (row + 1 >= this.array.length && col + 1 >= this.array[0].length) {
@@ -192,9 +193,9 @@ public class MyArrayList2D<T extends Comparable<T>> {
             }
             array[current[0]][current[1]] = valueToInsert;
             max_length = Math.max(max_length, valueToInsert.toString().length());
-            System.out.println("SUCCESS: '" + valueToInsert + "' inserted at (" + row + "," + col + ") successfully. ");
         }
-
+        System.out.println("SUCCESS: The value '" + valueToInsert + "' is inserted at (" + row + "," + col + ") successfully. ");
+        return true;
     }
 
     public void insertInOrder(T valueToInsert) {
