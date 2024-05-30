@@ -221,19 +221,20 @@ public class MyArrayList2D<T extends Comparable<T>> {
         System.out.println("SUCCESS: The value '" + valueToInsert + "' has been inserted in order successfully. ");
     }
 
-    public void updateIndex(int row, int col, T valueToUpdate) {
+    public boolean updateIndex(int row, int col, T valueToUpdate) {
         /*
-        method: changes/adds a valueToUpdate to a specific space in the matrix. it first checks if the matrix is big enough to have that specific address. it increases the matrix size to that address. then it modifies that address to give it that valueToUpdate. 
+        method: changes/adds a valueToUpdate to a specific space in the matrix. it first checks if the matrix is big enough to have that specific address. it rejects if address is out of bounds. then it modifies that address to give it that valueToUpdate. 
          */
-        if (row + 1 >= this.array.length && col + 1 >= this.array[0].length) {
-            incSize(row + 2, col + 2);
-        } else if (row + 1 >= this.array.length) {
-            incSize(row + 2, this.array[0].length);
-        } else if (col + 1 >= this.array[0].length) {
-            incSize(this.array.length, col + 2);
+        if (row < 0 || col < 0) {
+            System.out.println("ERROR: (" + row + "," + col + ") cannot be updated as it is invalid position. ");
+            return false;
+        }
+        if (row + 1 >= this.array.length || col + 1 >= this.array[0].length) {
+            System.out.println("ERROR: (" + row + "," + col + ") cannot be updated as it is not contained by array. ");
         }
         this.array[row][col] = valueToUpdate;
-        System.out.println("SUCCESS: Value '" + valueToUpdate + "' has been updated to (" + row + "," + col + "). ");
+        System.out.println("SUCCESS: Value '" + valueToUpdate + "' has been updated to (" + row + "," + col + ") successfully. ");
+        return true;
     }
 
     public boolean find(T valueToFind) {
@@ -261,6 +262,14 @@ public class MyArrayList2D<T extends Comparable<T>> {
         /*
         method: gets a valueToGet, just run two for loops and check each address. if found, return the row,col as an int array. else if not found after checking each address, then return row,col as -1,-1 to show that the valueToGet doesnt exist in the array.
          */
+        if (size() == 0) {
+            System.out.println("ERROR: MyArrayList is empty. ");
+            return new int[]{-1, -1};
+        }
+        if (valueToGet == null) {
+            System.out.println("ERROR: Value to find is null. ");
+            return new int[]{-1, -1};
+        }
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
                 if (array[i][j] != null && array[i][j].compareTo(valueToGet) == 0) {

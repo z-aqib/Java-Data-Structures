@@ -133,8 +133,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
 
     public boolean insertAt(int indexToInsertAt, T valueToInsert) {
         /*
-        method: inserts a value at a specific index. BIG OH = n. 
-        first it increases the array if its full. it checks the indexToInsertAt, if its valid, it runs further. first it checks, if the indexToInsertAt we are inserting on is just the next indexToInsertAt after where our currentPointer is, we will insert at end normally. otherwise, if the indexToInsertAt which we have to insert at is between our inserted elements, we will move them one forward and insert at that indexToInsertAt. otherwise, if we arent near our currentPointer, then insert at that indexToInsertAt and increment extra indexes. 
+        method: inserts a value at a specific index. BIG OH = n. first it increases the array if its full. it checks the indexToInsertAt, if its valid, it runs further. first it checks, if the indexToInsertAt we are inserting on is just the next indexToInsertAt after where our currentPointer is, we will insert at end normally. otherwise, if the indexToInsertAt which we have to insert at is between our inserted elements, we will move them one forward and insert at that indexToInsertAt. otherwise, if we arent near our currentPointer, then insert at that indexToInsertAt and increment extra indexes. 
          */
         if (indexToInsertAt < 0) {
             System.out.println("ERROR: Index to be updated is lesser than 0 and does not exist. ");
@@ -161,8 +160,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
 
     public void insertInOrder(T valueToInsert) {
         /* 
-        method: inserts in order in the arraylist. BIG OH = n^2. 
-        if it is sorted, find the correct index and call insertAt(); but if it is not sorted, just add it to the end and call sort();
+        method: inserts in order in the arraylist. BIG OH = n^2. if it is sorted, find the correct index and call insertAt(); but if it is not sorted, just add it to the end and call sort();
          */
         if (sorted == true) {
             int indexToInsertAt = -2;
@@ -186,37 +184,37 @@ public class MyArrayList1D<T extends Comparable<T>> {
         System.out.println("SUCCESS: '" + valueToInsert + "' inserted in order successfully. ");
     }
 
-    public void update(int indexToUpdate, T updatedValue) {
+    public boolean updateIndex(int indexToUpdate, T valueToUpdate) {
         /*
-        method: updates the updatedValue at a specific indexToUpdate. BIG OH = 1. 
-        it does not matter if the updatedValue at that indexToUpdate is null or already existing; this method will modify the data at an indexToUpdate. 
+        method: updates the valueToUpdate at a specific indexToUpdate. BIG OH = 1. it does not matter if the valueToUpdate at that indexToUpdate is null or already existing; this method will modify the data at an indexToUpdate. 
          */
         // if indexToUpdate is lesser than zero, return immediately
         if (indexToUpdate < 0) {
             System.out.println("ERROR: Index to be updated is lesser than 0 and does not exist. ");
-            return;
+            return false;
         }
-        // if indexToUpdate is greater than capacity of array, make it large enough.
+        // if indexToUpdate is greater than capacity of array, return. 
         if (indexToUpdate >= capacity()) {
-            incSize(indexToUpdate + 1);
+            System.out.println("ERROR: Index to be updated is not within array bounds. ");
+            return false;
         }
-        // now either add it normally or update the specific indexToUpdate
+        // now either add it normally or updateIndex the specific indexToUpdate
         if (indexToUpdate == this.pointerIndex + 1) { // if its just the next space, insertEnd normally
-            insertEnd(updatedValue);
+            insertEnd(valueToUpdate);
         } else if (indexToUpdate <= this.pointerIndex) { // if its being modified, modify it
-            this.array[indexToUpdate] = updatedValue;
+            this.array[indexToUpdate] = valueToUpdate;
         } else { // otherwise, its being inserted. increment extraIndexes
-            this.array[indexToUpdate] = updatedValue;
+            this.array[indexToUpdate] = valueToUpdate;
             this.extraIndexCounter++;
         }
         sorted = false;
-        System.out.println("SUCCESS: Value '" + updatedValue.toString() + "' has been updated to index " + indexToUpdate + " successfully. ");
+        System.out.println("SUCCESS: Value '" + valueToUpdate + "' has been updated to index " + indexToUpdate + " successfully. ");
+        return true;
     }
 
     public boolean find(T valueToFind) {
         /*
-        method: finds if a specific value is in the arraylist or not. BIG OH = n. 
-        it uses getIndex(). getIndex() checks the entire array, if it finds it it returns its index else -1. in find, it checks if its -1, it returns false else true. 
+        method: finds if a specific value is in the arraylist or not. BIG OH = n. it uses getIndex(). getIndex() checks the entire array, if it finds it it returns its index else -1. in find, it checks if its -1, it returns false else true.
          */
         if (getIndex(valueToFind) == -1) {
             System.out.println("ERROR: Value '" + valueToFind.toString() + "' does not exist in MyArrayList. ");
@@ -249,6 +247,10 @@ public class MyArrayList1D<T extends Comparable<T>> {
             System.out.println("ERROR: MyArrayList is empty. ");
             return -1;
         }
+        if (valueToGet == null) {
+            System.out.println("ERROR: Value to find is null. ");
+            return -1;
+        }
         for (int i = 0; i < capacity(); i++) {
             if (this.array[i] != null && this.array[i].compareTo(valueToGet) == 0) {
                 return i;
@@ -270,7 +272,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     public T getLast() {
         /*
         method: gets the last CONTINOUS element in the arraylist, updated indexes do not count. BIG OH = 1. 
-        i.e., if my arraylist is 1 5 4 3 n n n 10 n n, where n = null, then this method will return 3 as the last continuous value, 10 must have been inserted using insertAt() or update()
+        i.e., if my arraylist is 1 5 4 3 n n n 10 n n, where n = null, then this method will return 3 as the last continuous value, 10 must have been inserted using insertAt() or updateIndex()
          */
         if (size() > 0) {
             return this.array[this.pointerIndex];
