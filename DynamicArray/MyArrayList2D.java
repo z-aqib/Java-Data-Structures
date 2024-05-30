@@ -42,7 +42,9 @@ public class MyArrayList2D<T extends Comparable<T>> {
         String str = "column| ";
         int max_cols = array[0].length;
         for (int i = 0; i < max_cols; i++) {
-            max_cols = Math.max(max_cols, array[i].length);
+            if (i < array.length) {
+                max_cols = Math.max(max_cols, array[i].length);
+            }
             for (int j = 0; j < max_length / 2; j++) {
                 str += " ";
             }
@@ -60,7 +62,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
         // data string
         for (int i = 0; i < this.array.length; i++) {
             str += "row " + i + " | ";
-            for (int j = 0; j < this.array[0].length; j++) {
+            for (int j = 0; j < this.array[i].length; j++) {
                 int remaining_spaces = max_length - 4;
                 if (this.array[i][j] != null) {
                     remaining_spaces = max_length - this.array[i][j].toString().length();
@@ -157,13 +159,16 @@ public class MyArrayList2D<T extends Comparable<T>> {
             return false;
         }
         // increase space
-        if (row + 1 >= this.array.length && col + 1 >= this.array[0].length) {
-            incSize(row + 2, col + 2);
-        } else if (row + 1 >= this.array.length) {
-            incSize(row + 2, this.array[0].length);
-        } else if (col + 1 >= this.array[0].length) {
-            incSize(this.array.length, col + 2);
+        if (row >= this.array.length && col >= this.array[0].length) {
+            incSize(row + 1, col + 1);
+        } else if (row >= this.array.length) {
+            incSize(row + 1, this.array[0].length);
+        } else if (col >= this.array[0].length) {
+            incSize(this.array.length, col + 1);
         }
+        currentRow = 0;
+        currentCol = 0;
+        assignNextNullSpace();
         // insert value
         if (array[row][col] == null) {
             array[row][col] = valueToInsert;
@@ -194,8 +199,8 @@ public class MyArrayList2D<T extends Comparable<T>> {
             sortLowToHigh();
         } else {
             boolean inserted = false;
-            for (int i = 0; i < array.length; i++) {
-                for (int j = 0; j < array[i].length; j++) {
+            for (int i = 0; i < array.length && inserted == false; i++) {
+                for (int j = 0; j < array[i].length && inserted == false; j++) {
                     if (array[i][j].compareTo(valueToInsert) == 1) {
                         insertAt(i, j, valueToInsert);
                         inserted = true;
@@ -218,6 +223,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
         }
         if (row + 1 >= this.array.length || col + 1 >= this.array[0].length) {
             System.out.println("ERROR: (" + row + "," + col + ") cannot be updated as it is not contained by array. ");
+            return false;
         }
         this.array[row][col] = valueToUpdate;
         System.out.println("SUCCESS: Value '" + valueToUpdate + "' has been updated to (" + row + "," + col + ") successfully. ");
@@ -523,6 +529,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     public MyArrayList2D merge(MyArrayList2D list1, MyArrayList2D list2) {
         // method: merges two lists into one. this is done by creating an empty list of size list1+list2. then get each element of both lists, compare, insert the SMALLER ONE. if either one of them are null, move the pointer one ahead. if either of them reach their end, run a loop to add all the remaining ones directly. 
         int together_rows = list2.getNumberOfRows() + list1.getNumberOfRows();
+        System.out.println("rows -> " + together_rows);
         int together_cols = list2.getNumberOfCols() + list1.getNumberOfCols();
         MyArrayList2D list3 = new MyArrayList2D(together_rows, together_cols);
         list1.sortLowToHigh();
@@ -557,13 +564,6 @@ public class MyArrayList2D<T extends Comparable<T>> {
             pointer1 = list1.moveForward(pointer1[0], pointer1[1]);
         }
         return list3;
-    }
-
-    public MyArrayList2D getMyArrayList2D() {
-        // method: creates a standard size MyArrayList2D with random integers
-        MyArrayList2D list = new MyArrayList2D();
-        list.assignRandomIntegers();
-        return list;
     }
 
     public boolean appendRow(T[] rowArray) {
@@ -640,12 +640,12 @@ public class MyArrayList2D<T extends Comparable<T>> {
         // method: finds the next null space in the array and assigns CurrentRow CurrentCol its position. this is done by getting the current positions and moving ahead until we get a null space. if while moving ahead we finish the array space, then we increase the array space. 
         int[] nextIndex;
         do {
-            nextIndex = moveForward(currentRow, currentCol);
-            currentRow = nextIndex[0];
-            currentCol = nextIndex[1];
             if (isFull() == true) {
                 incSize(currentRow + 2, array[0].length);
             }
+            nextIndex = moveForward(currentRow, currentCol);
+            currentRow = nextIndex[0];
+            currentCol = nextIndex[1];
         } while (this.array[currentRow][currentCol] != null); // we move forward until we getIndex the next empty space
     }
 

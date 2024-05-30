@@ -478,11 +478,4 @@ public class MyArrayList1D<T extends Comparable<T>> {
         return list3;
     }
 
-    public MyArrayList1D getMyArrayList1D() {
-        // method: creates a standard size MyArrayList1D with random integers
-        MyArrayList1D list = new MyArrayList1D();
-        list.assignRandomIntegers();
-        return list;
-    }
-
 }

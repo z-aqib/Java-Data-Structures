@@ -57,3 +57,4 @@ This table lists the possible functions in MyArrayList, how they were implemente
 | 38 | **appendRow**(row): void | appends a given row to MyArrayList2D | _not valid_ | _not valid_ | _O(m*n)_ | no. of columns of given row must be equal to no. of columns of array[][]. increase array size if needed. append using for-loop. |
 | 39 | **appendCol**(col): void | appends a given column to MyArrayList2D | _not valid_ | _not valid_ | _O(m*n)_ | no. of rows of given column must be equal to no. of rows of array[][]. increase array size if needed. append using for-loop. |
 
+Number 37 are in class _Main_DynamicArray_
