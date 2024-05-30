@@ -529,7 +529,6 @@ public class MyArrayList2D<T extends Comparable<T>> {
     public MyArrayList2D merge(MyArrayList2D list1, MyArrayList2D list2) {
         // method: merges two lists into one. this is done by creating an empty list of size list1+list2. then get each element of both lists, compare, insert the SMALLER ONE. if either one of them are null, move the pointer one ahead. if either of them reach their end, run a loop to add all the remaining ones directly. 
         int together_rows = list2.getNumberOfRows() + list1.getNumberOfRows();
-        System.out.println("rows -> " + together_rows);
         int together_cols = list2.getNumberOfCols() + list1.getNumberOfCols();
         MyArrayList2D list3 = new MyArrayList2D(together_rows, together_cols);
         list1.sortLowToHigh();
