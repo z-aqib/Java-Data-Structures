@@ -283,12 +283,9 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public T deleteIndex(int indexToDelete) {
-        /*
-        method: removes a specific index. BIG OH = 1. 
-        by moving all the values ahead of it one step forward, and making the last value null. 
-         */
-        //if indexToDelete is lesser than zero, return immediately
-        if (indexToDelete == -1 || indexToDelete >= capacity()) {
+        // method: removes a specific index. BIG OH = 1. by moving all the values ahead of it one step forward, and making the last value null. 
+        //if indexToDelete is out of bounds, return immediately
+        if (indexToDelete >= capacity()) {
             System.out.println("ERROR: ArrayList does not contain index " + indexToDelete);
             return null;
         } else if (indexToDelete < 0) {

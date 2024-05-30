@@ -310,9 +310,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public T deleteIndex(int row, int col) {
-        /*
-        method: deletes a specific index. first it checks if the row,col coordinates are within the range 0 to array size and the value at that coordinate is not null. then it moves each value backward and then finally moves currentRow, currentCol one space back. 
-         */
+        // method: deletes a specific index. first it checks if the row,col coordinates are within the range 0 to array size and the value at that coordinate is not null. then it moves each value backward and then finally moves currentRow, currentCol one space back. 
         if (row >= array.length || col >= array[0].length || row < 0 || col < 0 || array[row][col] == null) {
             System.out.println("ERROR: (" + row + "," + col + ") could not be deleted as it does not exist. ");
             return null;
@@ -337,9 +335,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public T deleteFirstOccurence(T valueToDelete) {
-        /*
-        method: this methods deletes a specific valueToDelete by backtracking all the values after it to remove the empty space, then makes the last space null. it does this by first finding the (row,col) coordinates of the deleting valueToDelete and it moves one space ahead until we come to the last null valueToDelete. 
-         */
+        // method: this methods deletes a specific valueToDelete by backtracking all the values after it to remove the empty space, then makes the last space null. it does this by first finding the (row,col) coordinates of the deleting valueToDelete and it moves one space ahead until we come to the last null valueToDelete. 
         int[] find = getIndex(valueToDelete);
         if (find[0] == -1) {
             System.out.println("ERROR: The value '" + valueToDelete + "' does not exist in MyArrayList2D. ");

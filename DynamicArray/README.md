@@ -34,5 +34,8 @@ This table lists the possible functions in MyArrayList, how they were implemente
 | 15 | **getFirst**(): T | gets the first element in the DS | *O(1)* | returns data at the 0th index | *O(1)* | returns data at the (0,0)th index |
 | 16 | **getLast**(): T | gets the last element in the DS | *O(1)* | returns data at _pointerIndex_ index | *O(1)* | returns data at (_currentRow_, _currentCol_) index |
 | 17 | **clear**(): boolean | clears the DS | *O(1)* | re-initializes the array[] of same length | *O(1)* | re-initializes the array[][] of same rows and columns |
-| 18 | **size**(): int | gets the used up/occupied space of the DS | *O(1)* | returns _pointerIndex_ and _extraIndexesCounter_ | *O(1)* | return (_currentRow_* no. of columns)+ _currentCol_ |
+| 18 | **size**(): int | gets the used up/occupied space of the DS | *O(1)* | returns _pointerIndex_ and _extraIndexesCounter_ | *O(1)* | return (_currentRow_ * no. of columns) + _currentCol_ |
 | 19 | **capacity**(): int | the total space of the DS | *O(1)* | returns *array.length* | *O(1)* | returns *array.length* * *array[0].length* | 
+| 20 | **isEmpty**(): boolean | is the DS empty? | *O(1)* | returns if _size()_ is equal to 0 | *O(1)* | returns if _currentRow_ and _currentCol_ are equal to -1 | 
+| 21 | **isFull**(): boolean | is the DS full? | *O(1)* | returns if _size()_==_capacity()_ | *O(1)* | returns if _size()_==_capacity()_ |
+| 22 | **deleteIndex**(index): T | deletes a specific index & returns the data on it | *O(n)* | shift all values after _index_ one backward and make the _pointerIndex_ index null | _O(m*n)_ | shift all values after _index_ one backward and move _currentRow_ and _currentCol_ one back |
