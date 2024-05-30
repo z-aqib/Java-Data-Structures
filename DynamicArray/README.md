@@ -45,6 +45,15 @@ This table lists the possible functions in MyArrayList, how they were implemente
 | 26 | **deleteFirst**(): T | deletes the first element | *O(n)* | shifts all the elements one position back | _O(m*n)_ | shifts all the elements one position back |
 | 27 | **deleteLast**(): T | deletes the last element | *O(1)* | makes the _pointerIndex_ index null | _O(1)_ | makes index (_currentRow_, _currentCol_) null | 
 | 28 | **sortLowToHigh**(): void | sorts the DS from low to high | *O(n^2)* | performs selection sort | _O((m*n)^2)_ | performs selection sort |
-|29| **removingDuplicates**(): void | removes duplicates in the DS after sorting it | *O(n)* | compares each element with its preceeding and succeeding element | _O(m*n)_ | compares each element with its preceeding and succeeding element | 
+| 29 | **removingDuplicates**(): void | removes duplicates in the DS after sorting it | *O(n)* | compares each element with its preceeding and succeeding element | _O(m*n)_ | compares each element with its preceeding and succeeding element | 
 | 30 | **findMax**(): T | returns the maximum element in the DS | *O(n^2)* | first sorts, then returns last element | _O((m*n)^2)_ | first sorts, then returns last element |
-| 31 | **findMin**(): T | 
+| 31 | **findMin**(): T | returns the minimum element in the DS | *O(n^2)* | first sorts, then returns first element | _O((m*n)^2)_ | first sorts, then returns first element |
+| 32 | **toArray**(): T[] (where it returns T[][] for 2D) | converts DynamicArray to a normal array | *O(1)* | returns array[] | *O(1)* | returns array[][] | 
+| 33 | **reverse**(): void | reverses the elements of the array | *O(n)* | takes two pointers, front & back, swaps their data and moves them closer | _O(m*n)_ | takes two pointers, front & back, swaps their data, and moves them closer |
+| 34 | **incSize**(size): void (where *index* is *row, col* for 2D) | increases array size, provides dynamic property | _O(n)_ | creates an array[] of size _size_ and copies all elements to it | _O(m*n)_ | creates an array[][] of rows _row_ and columns _col_ and copies all elements to it |
+| 35 | **assignRandomIntegers**(): void | assigns random integers between 1 to 10 in the DS | *O(n)* | calculates empty spaces in array[] and assigns random ints on each of them by _insertEnd()_ | _O(m*n)_ | calculates empty spaces in array[][] and assigns random ints on each of them by _insertEnd()_ |
+| 36 | **merge**(MyArrayList, MyArrayList): MyArrayList | merges two MyArrayLists of capacity p, q into one | *O(p+q)* | takes each MyArrayList1D, inserts the smaller element and moves that list one index forward. continues until both lists are completed | *O(p+q)* | takes each MyArrayList2D, inserts the smaller element and moves that list one index forward. continous until both are traversed.
+| 37 | **getMyArrayList**(): MyArrayList | returns a randomly generated MyArrayList | *O(5)* | creates a MyArrayList1D of standard size 5, calls _assignRandomIntegers()_ | *O(5)* | creates a MyArrayList2D of standard size 5 by 5, calls _assignRandomIntegers()_ | 
+| 38 | **appendRow**(row): void | appends a given row to MyArrayList2D | _not valid_ | _not valid_ | _O(m*n)_ | no. of columns of given row must be equal to no. of columns of array[][]. increase array size if needed. append using for-loop. |
+| 39 | **appendCol**(col): void | appends a given column to MyArrayList2D | _not valid_ | _not valid_ | _O(m*n)_ | no. of rows of given column must be equal to no. of rows of array[][]. increase array size if needed. append using for-loop. |
+

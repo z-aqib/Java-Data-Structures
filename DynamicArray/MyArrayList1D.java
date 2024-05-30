@@ -415,12 +415,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public void reverse() {
-        /*
-        method: reverses the values of the array. space and time complexity is n/2
-        two ways are:
-        WAY 1 -> create another arraylist and copy each value from bottom to top. problems are that there is more time complexity and space complexity
-        WAY 2 -> swap the beginning and last values and move further inside until there are no more values to swap. this is better as it doesnt required additional 
-         */
+        // method: reverses the values of the array. space and time complexity is n/2. two ways are: WAY 1 -> create another arraylist and copy each value from bottom to top. problems are that there is more time complexity and space complexity. WAY 2 -> swap the beginning and last values and move further inside until there are no more values to swap. this is better as it doesnt required additional 
         for (int forward = 0, backward = pointerIndex; forward != backward && backward > forward; forward++, backward--) {
             T temp = array[forward];
             array[forward] = array[backward];
@@ -430,10 +425,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     private void incSize(int incrementSize) {
-        /*
-        method: resizes the array when space is finished. BIG OH = N. 
-        it creates a new array with larger size, copies each value, then assigns the new array to the array. 
-         */
+        // method: resizes the array when space is finished. BIG OH = N. it creates a new array with larger size, copies each value, then assigns the new array to the array. 
         T[] newArray = (T[]) new Comparable[incrementSize];
         System.arraycopy(this.array, 0, newArray, 0, capacity());
 //        OR, YOU CAN MANUAL COPY: 
@@ -450,6 +442,47 @@ public class MyArrayList1D<T extends Comparable<T>> {
             insertEnd((T) (Comparable) (int) (Math.random() * 10));
         }
         System.out.println("SUCCESS: MyArrayList has been assigned " + remainingSpace + " random integers successfully. ");
+    }
+
+    public MyArrayList1D merge(MyArrayList1D list1, MyArrayList1D list2) {
+        // method: merges two lists into one. this is done by creating an empty list of size list1+list2. then get each element of both lists, compare, insert the SMALLER ONE. if either one of them are null, move the pointer one ahead. if either of them reach their end, run a loop to add all the remaining ones directly. 
+        int together_length = list1.capacity() + list2.capacity();
+        MyArrayList1D list3 = new MyArrayList1D(together_length);
+        list1.sortLowToHigh();
+        list2.sortLowToHigh();
+        int pointer1 = 0;
+        int pointer2 = 0;
+        while (pointer1 < list1.capacity() && pointer2 < list2.capacity()) {
+            if (list1.getValue(pointer1) != null && list2.getValue(pointer2) != null) {
+                if (list1.getValue(pointer1).compareTo(list2.getValue(pointer2)) > 0) {
+                    list3.insertEnd(list2.getValue(pointer2++));
+                } else {
+                    list3.insertEnd(list1.getValue(pointer1++));
+                }
+            } else if (list2.getValue(pointer2) == null) {
+                pointer2++;
+            } else if (list1.getValue(pointer1) == null) {
+                pointer1++;
+            }
+        }
+        while (pointer1++ < list1.capacity()) {
+            if (list1.getValue(pointer1) != null) {
+                list3.insertEnd(list1.getValue(pointer1));
+            }
+        }
+        while (pointer2++ < list2.capacity()) {
+            if (list2.getValue(pointer1) != null) {
+                list3.insertEnd(list2.getValue(pointer2));
+            }
+        }
+        return list3;
+    }
+
+    public MyArrayList1D getMyArrayList1D() {
+        // method: creates a standard size MyArrayList1D with random integers
+        MyArrayList1D list = new MyArrayList1D();
+        list.assignRandomIntegers();
+        return list;
     }
 
 }

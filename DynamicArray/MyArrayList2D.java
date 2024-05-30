@@ -470,16 +470,17 @@ public class MyArrayList2D<T extends Comparable<T>> {
         return array[0][0];
     }
 
-    public Comparable<T>[] toArray() {
-        // method: converts the matrix to a single dimensional array
-        Comparable<T>[] array1D = (T[]) new Comparable[size()];
-        for (int i = 0, row = 0, col = 0; i < array1D.length; i++) {
-            array1D[i] = array[row][col];
-            int[] nextt = moveForward(row, col);
-            row = nextt[0];
-            col = nextt[1];
-        }
-        return array1D;
+    public Comparable<T>[][] toArray() {
+        // method: converts the MyArrayList2D to array[][]
+//        Comparable<T>[] array1D = (T[]) new Comparable[size()];
+//        for (int i = 0, row = 0, col = 0; i < array1D.length; i++) {
+//            array1D[i] = array[row][col];
+//            int[] nextt = moveForward(row, col);
+//            row = nextt[0];
+//            col = nextt[1];
+//        }
+//        return array1D;
+        return array;
     }
 
     public void reverse() {
@@ -495,9 +496,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     private void incSize(int row, int col) {
-        /*
-        method: resizes the array. increases the array to the size specified by creating a new array of the given size and copying all the values given but before that, it checks if the size specified is lesser than the current size, so it returns. 
-         */
+        // method: resizes the array. increases the array to the size specified by creating a new array of the given size and copying all the values given but before that, it checks if the size specified is lesser than the current size, so it returns. 
         if (row < array.length || col < array[0].length) {
             return;
         }
@@ -513,10 +512,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public void assignRandomIntegers() {
-        /*
-        method: will intialize random integer values to the remaining matrix
-        it will first getIndex how many spaces are left in the matrix by : first it calculates the total number of spaces in the matrix by multiplying row by col example its a standard 5 by 5 matrix, so 25, then it calculates the occupied spaces by first multiplying the fully occupied rows by the columns and then adding the half empty column spaces. example im on (1,4) so i first getIndex fully occupied rows (1*5=5) then remaining columns in the current row (4) = 5+4=9. but actually 10 spaces are occupied in a 5 by5 matrix, so due to indexing, we insertEnd 1. then it runs the loop for the remaining spaces to insertEnd that many values. 
-         */
+        // method: will intialize random integer values to the remaining matrix. it will first getIndex how many spaces are left in the matrix by : first it calculates the total number of spaces in the matrix by multiplying row by col example its a standard 5 by 5 matrix, so 25, then it calculates the occupied spaces by first multiplying the fully occupied rows by the columns and then adding the half empty column spaces. example im on (1,4) so i first getIndex fully occupied rows (1*5=5) then remaining columns in the current row (4) = 5+4=9. but actually 10 spaces are occupied in a 5 by5 matrix, so due to indexing, we insertEnd 1. then it runs the loop for the remaining spaces to insertEnd that many values. 
         int remainingSpace = capacity() - size();
         for (int i = 0; i < remainingSpace; i++) {
             insertEnd((T) (Comparable) (int) (Math.random() * 10));
@@ -524,13 +520,57 @@ public class MyArrayList2D<T extends Comparable<T>> {
         System.out.println("SUCCESS: MyArrayList2D has been initialized with " + remainingSpace + " random integers. ");
     }
 
-    public void appendRow(T[] rowArray) {
-        /*
-        method: adds a row to the entire matrix. to insertEnd a row, it must be equal to the number of columns of the matrix. if it is equal, then proceed else return . simple logic, first create space to insertEnd another row if the array is full. then simply copy paste the row array to the next row after current row. now move back to current row, so that when insertEnd function is called, it adds right where we left off before the row append. 
-         */
+    public MyArrayList2D merge(MyArrayList2D list1, MyArrayList2D list2) {
+        // method: merges two lists into one. this is done by creating an empty list of size list1+list2. then get each element of both lists, compare, insert the SMALLER ONE. if either one of them are null, move the pointer one ahead. if either of them reach their end, run a loop to add all the remaining ones directly. 
+        int together_rows = list2.getNumberOfRows() + list1.getNumberOfRows();
+        int together_cols = list2.getNumberOfCols() + list1.getNumberOfCols();
+        MyArrayList2D list3 = new MyArrayList2D(together_rows, together_cols);
+        list1.sortLowToHigh();
+        list2.sortLowToHigh();
+        int[] pointer1 = {0, 0};
+        int[] pointer2 = {0, 0};
+        while (pointer1[0] < list1.getNumberOfRows() && pointer2[0] < list2.getNumberOfRows()) {
+            if (list1.getValue(pointer1[0], pointer1[1]) != null && list2.getValue(pointer2[0], pointer2[1]) != null) {
+                if (list1.getValue(pointer1[0], pointer1[1]).compareTo(list2.getValue(pointer2[0], pointer2[1])) > 0) {
+                    list3.insertEnd(list2.getValue(pointer2[0], pointer2[1]));
+                    pointer2 = list2.moveForward(pointer2[0], pointer2[1]);
+                } else {
+                    list3.insertEnd(list1.getValue(pointer1[0], pointer1[1]));
+                    pointer1 = list1.moveForward(pointer1[0], pointer1[1]);
+                }
+            } else if (list2.getValue(pointer2[0], pointer2[1]) == null) {
+                pointer2 = list2.moveForward(pointer2[0], pointer2[1]);
+            } else if (list1.getValue(pointer1[0], pointer1[1]) == null) {
+                pointer1 = list1.moveForward(pointer1[0], pointer1[1]);
+            }
+        }
+        while (pointer2[0] < list2.getNumberOfRows()) {
+            if (list2.getValue(pointer2[0], pointer2[1]) != null) {
+                list3.insertEnd(list2.getValue(pointer2[0], pointer2[1]));
+            }
+            pointer2 = list2.moveForward(pointer2[0], pointer2[1]);
+        }
+        while (pointer1[0] < list1.getNumberOfRows()) {
+            if (list1.getValue(pointer1[0], pointer1[1]) != null) {
+                list3.insertEnd(list1.getValue(pointer1[0], pointer1[1]));
+            }
+            pointer1 = list1.moveForward(pointer1[0], pointer1[1]);
+        }
+        return list3;
+    }
+
+    public MyArrayList2D getMyArrayList2D() {
+        // method: creates a standard size MyArrayList2D with random integers
+        MyArrayList2D list = new MyArrayList2D();
+        list.assignRandomIntegers();
+        return list;
+    }
+
+    public boolean appendRow(T[] rowArray) {
+        // method: adds a row to the entire matrix. to insertEnd a row, it must be equal to the number of columns of the matrix. if it is equal, then proceed else return . simple logic, first create space to insertEnd another row if the array is full. then simply copy paste the row array to the next row after current row. now move back to current row, so that when insertEnd function is called, it adds right where we left off before the row append. 
         if (rowArray.length != this.currentCol + 1) {
             System.out.println("ERROR: This row cannot be appended as it needs to have " + this.currentCol + 1 + " columns but it has " + rowArray.length + " columns. ");
-            return;
+            return false;
         }
         if (++this.currentRow == this.array.length) {
             incSize(this.array.length + 1, this.array[0].length);
@@ -542,15 +582,14 @@ public class MyArrayList2D<T extends Comparable<T>> {
 //        }
         currentRow--;
         System.out.println("SUCCESS: The row has been appended successfully. ");
+        return true;
     }
 
-    public void appendCol(T[] colArray) {
-        /*
-        method: adds a col to the entire matrix. to insertEnd a col, it must be equal to the number of rows of the matrix. if it is equal, then proceed else return . simple logic, first create space to insertEnd another col if the array is full. then simply copy paste the col array to the next col after current col. now move back to current col, so that when insertEnd function is called, it adds right where we left off before the col append. 
-         */
+    public boolean appendCol(T[] colArray) {
+        //method: adds a col to the entire matrix. to insertEnd a col, it must be equal to the number of rows of the matrix. if it is equal, then proceed else return . simple logic, first create space to insertEnd another col if the array is full. then simply copy paste the col array to the next col after current col. now move back to current col, so that when insertEnd function is called, it adds right where we left off before the col append. 
         if (colArray.length != this.currentRow + 1) {
             System.out.println("ERROR: This column cannot be appended as it needs to have " + this.array.length + " rows but it has " + colArray.length + " rows. ");
-            return;
+            return false;
         }
         if (++this.currentCol == this.array[0].length) {
             incSize(this.array.length, this.array[0].length + 1);
@@ -560,6 +599,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
         }
         currentCol--; // make it back to the column we were at before appending
         System.out.println("SUCCESS: The column has been appended successfully. ");
+        return true;
     }
 
     private int[] moveForward(int row, int col) {
@@ -607,6 +647,14 @@ public class MyArrayList2D<T extends Comparable<T>> {
                 incSize(currentRow + 2, array[0].length);
             }
         } while (this.array[currentRow][currentCol] != null); // we move forward until we getIndex the next empty space
+    }
+
+    private int getNumberOfRows() {
+        return array.length;
+    }
+
+    private int getNumberOfCols() {
+        return array[0].length;
     }
 
 }
