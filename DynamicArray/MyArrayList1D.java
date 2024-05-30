@@ -24,9 +24,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     private void start(int size) {
-        /*
-        method: starts the array list, it declares an array of size given and sets the pointer Index. the extra indexes is zero as no elements have been inserted. 
-         */
+        // method: starts the array list, it declares an array of size given and sets the pointer Index. the extra indexes is zero as no elements have been inserted. 
         this.array = (T[]) new Comparable[size];
         this.pointerIndex = -1;
         this.extraIndexCounter = 0;
@@ -62,9 +60,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public void insertStart(T valueToInsert) {
-        /*
-        method: it inserts values at the start. BIG OH = n. this is done by moving all the values one space forward and then inserting the value at the first index. if the array is already full, we will first increase its size then shift the values. 
-         */
+        // method: it inserts values at the start. BIG OH = n. this is done by moving all the values one space forward and then inserting the value at the first index. if the array is already full, we will first increase its size then shift the values. 
         if (++pointerIndex == array.length) {
             incSize(array.length * 2);
         }
@@ -77,9 +73,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public void insertEnd(T valueToInsert) {
-        /*
-        method: inserting values to the array. BIG OH = n. if array is full, double the size; after that add the element. else add normally. 
-         */
+        // method: inserting values to the array. BIG OH = n. if array is full, double the size; after that add the element. else add normally. 
         if (size() == capacity()) {
             incSize(capacity() * 2);
         }
@@ -89,10 +83,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public boolean insertBefore(T dataBeforeInserting, T valueToInsert) {
-        /*
-        method: inserts a value before a specific value. (first occurence of that value) BIG OH = n.
-        first it finds the index at which that value exists, if it doesnt exist it does not insert, else move all the values including the index one forward, then insert the value at the index. 
-         */
+        // method: inserts a value before a specific value. (first occurence of that value) BIG OH = n. first it finds the index at which that value exists, if it doesnt exist it does not insert, else move all the values including the index one forward, then insert the value at the index. 
         int index = getIndex(dataBeforeInserting);
         if (index == -1) {
             System.out.println("ERROR: '" + valueToInsert + "' cannot be inserted before '" + dataBeforeInserting + "' as MyArrayList does not contain it. ");
@@ -111,9 +102,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public boolean insertAfter(T dataAfterInserting, T valueToInsert) {
-        /*
-        method: inserts a value after a specific value. (first occurence of that value) BIG OH = n. first it finds the index at which that value exists, if it doesnt exist it does not insert, else move all the values not including the index one forward, then insert the value at index+1. 
-         */
+        // method: inserts a value after a specific value. (first occurence of that value) BIG OH = n. first it finds the index at which that value exists, if it doesnt exist it does not insert, else move all the values not including the index one forward, then insert the value at index+1. 
         int index = getIndex(dataAfterInserting);
         if (index == -1) {
             System.out.println("ERROR: '" + valueToInsert + "' cannot be inserted after '" + dataAfterInserting + "' as MyArrayList does not contain it. ");
@@ -132,9 +121,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public boolean insertAt(int indexToInsertAt, T valueToInsert) {
-        /*
-        method: inserts a value at a specific index. BIG OH = n. first it increases the array if its full. it checks the indexToInsertAt, if its valid, it runs further. first it checks, if the indexToInsertAt we are inserting on is just the next indexToInsertAt after where our currentPointer is, we will insert at end normally. otherwise, if the indexToInsertAt which we have to insert at is between our inserted elements, we will move them one forward and insert at that indexToInsertAt. otherwise, if we arent near our currentPointer, then insert at that indexToInsertAt and increment extra indexes. 
-         */
+        // method: inserts a value at a specific index. BIG OH = n. first it increases the array if its full. it checks the indexToInsertAt, if its valid, it runs further. first it checks, if the indexToInsertAt we are inserting on is just the next indexToInsertAt after where our currentPointer is, we will insert at end normally. otherwise, if the indexToInsertAt which we have to insert at is between our inserted elements, we will move them one forward and insert at that indexToInsertAt. otherwise, if we arent near our currentPointer, then insert at that indexToInsertAt and increment extra indexes. 
         if (indexToInsertAt < 0) {
             System.out.println("ERROR: Index to be updated is lesser than 0 and does not exist. ");
             return false;
@@ -159,9 +146,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public void insertInOrder(T valueToInsert) {
-        /* 
-        method: inserts in order in the arraylist. BIG OH = n^2. if it is sorted, find the correct index and call insertAt(); but if it is not sorted, just add it to the end and call sort();
-         */
+        // method: inserts in order in the arraylist. BIG OH = n^2. if it is sorted, find the correct index and call insertAt(); but if it is not sorted, just add it to the end and call sort(); 
         if (sorted == true) {
             int indexToInsertAt = -2;
             for (int i = 0; i < array.length; i++) {
@@ -185,9 +170,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public boolean updateIndex(int indexToUpdate, T valueToUpdate) {
-        /*
-        method: updates the valueToUpdate at a specific indexToUpdate. BIG OH = 1. it does not matter if the valueToUpdate at that indexToUpdate is null or already existing; this method will modify the data at an indexToUpdate. 
-         */
+        // method: updates the valueToUpdate at a specific indexToUpdate. BIG OH = 1. it does not matter if the valueToUpdate at that indexToUpdate is null or already existing; this method will modify the data at an indexToUpdate. 
         // if indexToUpdate is lesser than zero, return immediately
         if (indexToUpdate < 0) {
             System.out.println("ERROR: Index to be updated is lesser than 0 and does not exist. ");
@@ -213,9 +196,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public boolean find(T valueToFind) {
-        /*
-        method: finds if a specific value is in the arraylist or not. BIG OH = n. it uses getIndex(). getIndex() checks the entire array, if it finds it it returns its index else -1. in find, it checks if its -1, it returns false else true.
-         */
+        // method: finds if a specific value is in the arraylist or not. BIG OH = n. it uses getIndex(). getIndex() checks the entire array, if it finds it it returns its index else -1. in find, it checks if its -1, it returns false else true.
         if (getIndex(valueToFind) == -1) {
             System.out.println("ERROR: Value '" + valueToFind.toString() + "' does not exist in MyArrayList. ");
             return false;
@@ -225,24 +206,18 @@ public class MyArrayList1D<T extends Comparable<T>> {
         }
     }
 
-    public T getValue(int index) {
-        /*
-        method: get the value at a specific index. BIG OH = 1. 
-        if array is large enough to have that index and value at it is not null, return the value, else return null.
-         */
-        if (capacity() - 1 >= index && this.array[index] != null) {
-            System.out.println("SUCCESS: Value at index " + index + " is '" + this.array[index] + "'.");
-            return this.array[index];
+    public T getValue(int indexToGet) {
+        // method: get the value at a specific indexToGet. BIG OH = 1. if array is large enough to have that indexToGet and value at it is not null, return the value, else return null.
+        if (indexToGet <= capacity() - 1 && indexToGet >= 0) {
+            System.out.println("SUCCESS: Value at index " + indexToGet + " is '" + this.array[indexToGet] + "'.");
+            return this.array[indexToGet];
         } //else return null
-        System.out.println("ERROR: There is no value at index " + index + "\n" + toString());
+        System.out.println("ERROR: Index " + indexToGet + " does not exist in MyArrayList. ");
         return null;
     }
 
     public int getIndex(T valueToGet) {
-        /*
-        method: gets the index of a specific value. BIG OH = n. 
-        it searches each value in the array, if it finds the value, it returns its index else it returns -1. 
-         */
+        // method: gets the index of a specific value. BIG OH = n. it searches each value in the array, if it finds the value, it returns its index else it returns -1. 
         if (size() == 0) {
             System.out.println("ERROR: MyArrayList is empty. ");
             return -1;

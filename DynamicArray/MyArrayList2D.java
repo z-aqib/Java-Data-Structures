@@ -24,10 +24,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     private void start(int row, int col) {
-        /*
-        method: starts the class. BIG OH = 1. 
-        create a 2d array of row,col size and intialize the currentRow and currentCol indexes to be -1 (to show that array is empty)the maximum length of each element is 4 as all elements are 'null'. the maximum length will be recaculated at every element addition. 
-         */
+        // method: starts the class. BIG OH = 1. create a 2d array of row,col size and intialize the currentRow and currentCol indexes to be -1 (to show that array is empty)the maximum length of each element is 4 as all elements are 'null'. the maximum length will be recaculated at every element addition. 
         this.array = (T[][]) new Comparable[row][col];
         this.currentCol = this.currentRow = -1;
         this.max_length = 4;
@@ -90,10 +87,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public void insertStart(T valueToInsert) {
-        /*
-        method: inserts at the start of the matrix. BIG OH = M*N
-        first it moves all the elements one ahead, then adds the new valueToInsert to the start. this is done by first finding the next null space. then it shifts the lastly inserted valueToInsert to the null space. then it shifts all the rest of the valueToInsert just one ahead until we reach (0,0). then it inserts at (0,0)
-         */
+        // method: inserts at the start of the matrix. BIG OH = M*N. first it moves all the elements one ahead, then adds the new valueToInsert to the start. this is done by first finding the next null space. then it shifts the lastly inserted valueToInsert to the null space. then it shifts all the rest of the valueToInsert just one ahead until we reach (0,0). then it inserts at (0,0)
         // if array is null, insert at the head normally
         if (currentRow == -1) {
             array[++currentRow][++currentCol] = valueToInsert;
@@ -120,10 +114,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public void insertEnd(T valueToInsert) {
-        /*
-        method: adds a valueToInsert to the next NULL space in the matrix. BIG OH = M*N. 
-        i.e. it inserts at the end of all inserted. first it checks if the matrix is full or not. then it checks if we've reached the end of the row, then increment row and go to the first column. then it checks, is that space null? if yes, break the loop and place the valueToInsert at that space. if not, rerun the loop to getIndex an empty null space. after the valueToInsert is placed, compare its length to the max_length and re-calculate max_length. 
-         */
+        // method: adds a valueToInsert to the next NULL space in the matrix. BIG OH = M*N. i.e. it inserts at the end of all inserted. first it checks if the matrix is full or not. then it checks if we've reached the end of the row, then increment row and go to the first column. then it checks, is that space null? if yes, break the loop and place the valueToInsert at that space. if not, rerun the loop to getIndex an empty null space. after the valueToInsert is placed, compare its length to the max_length and re-calculate max_length. 
         // getIndex the next available space
         assignNextNullSpace();
         this.array[currentRow][currentCol] = valueToInsert; // put the valueToInsert at this null space
@@ -160,9 +151,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public boolean insertAt(int row, int col, T valueToInsert) {
-        /*
-        method: inserts at a specific index BIG OH = M*N; if that index doesnt exist, return . if that index requires more space, increase space. if that index is null, insert normally. otherwise, find the next null space, move all the values forward, and then insert at that index. 
-         */
+        // method: inserts at a specific index BIG OH = M*N; if that index doesnt exist, return . if that index requires more space, increase space. if that index is null, insert normally. otherwise, find the next null space, move all the values forward, and then insert at that index. 
         if (row < 0 || col < 0) {
             System.out.println("ERROR: Cannot be inserted at (" + row + "," + col + ") as it is invalid. ");
             return false;
@@ -222,9 +211,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public boolean updateIndex(int row, int col, T valueToUpdate) {
-        /*
-        method: changes/adds a valueToUpdate to a specific space in the matrix. it first checks if the matrix is big enough to have that specific address. it rejects if address is out of bounds. then it modifies that address to give it that valueToUpdate. 
-         */
+        // method: changes/adds a valueToUpdate to a specific space in the matrix. it first checks if the matrix is big enough to have that specific address. it rejects if address is out of bounds. then it modifies that address to give it that valueToUpdate. 
         if (row < 0 || col < 0) {
             System.out.println("ERROR: (" + row + "," + col + ") cannot be updated as it is invalid position. ");
             return false;
@@ -250,12 +237,12 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public T getValue(int row, int col) {
         // method: returns the value at a specific index. 
-        if (row < array.length && col < array[0].length) {
+        if (row < array.length && col < array[0].length && row >= 0 && col >= 0) {
+            System.out.println("SUCCESS: Value at index (" + row + "," + col + ") is '" + array[row][col] + "'.");
             return array[row][col];
-        } else {
-            System.out.println("ERROR: Arraylist does not contain (" + row + "," + col + ")");
-            return null;
         }
+        System.out.println("ERROR: Arraylist does not contain the index (" + row + "," + col + "). ");
+        return null;
     }
 
     public int[] getIndex(T valueToGet) {
