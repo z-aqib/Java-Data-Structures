@@ -16,12 +16,12 @@ This table lists the possible functions in all the data structures, and what the
 | 6  | **insertEnd**(data): void | inserts at the end, after the last added element |
 | 7  | **insertBefore**(dataBefore, dataInsert): boolean | inserts a data before a given data |
 | 8  | **insertAfter**(dataAfter, dataInsert): boolean | inserts a data after a given data |
-| 9  | **insertAt**(index, dataInsert): boolean (where *index* is *row, col* for 2D) | insert data at a given index |
+| 9  | **insertAt**(index, dataInsert): boolean | insert data at a given index |
 | 10 | **insertInOrder**(data): void | insert data in order in the DS |
 | 11 | **updateIndex**(index, dataUpdate): boolean | updates an existing index with data |
 | 12 | **find**(data): boolean | finds if a given data exists in the DS |
-| 13 | **getValue**(index): T (where *index* is *row, col* for 2D) | gets the data at a given index |
-| 14 | **getIndex**(data): int (it will return int[] for 2D) | gets the index of a certain data |
+| 13 | **getValue**(index): T | gets the data at a given index |
+| 14 | **getIndex**(data): int | gets the index of a certain data |
 | 15 | **getFirst**(): T | gets the first element in the DS |
 | 16 | **getLast**(): T | gets the last element in the DS |
 | 17 | **clear**(): boolean | clears the DS |
@@ -39,9 +39,9 @@ This table lists the possible functions in all the data structures, and what the
 | 29 | **removingDuplicates**(): void | removes duplicates in the DS after sorting it |
 | 30 | **findMax**(): T | returns the maximum element in the DS |
 | 31 | **findMin**(): T | returns the minimum element in the DS |
-| 32 | **toArray**(): T[] (where it returns T[][] for 2D) | converts DynamicArray to a normal array |
+| 32 | **toArray**(): T[] | converts DynamicArray to a normal array |
 | 33 | **reverse**(): void | reverses the elements of the array |
-| 34 | **incSize**(size): void (where *index* is *row, col* for 2D) | increases array size, provides dynamic property |
+| 34 | **incSize**(size): void | increases array size, provides dynamic property |
 | 35 | **assignRandomIntegers**(): void | assigns random integers between 1 to 10 in the DS |
 | 36 | **merge**(MyArrayList, MyArrayList): MyArrayList | merges two MyArrayLists of capacity p, q into one |
 | 37 | **getMyArrayList**(): MyArrayList | returns a randomly generated MyArrayList |
