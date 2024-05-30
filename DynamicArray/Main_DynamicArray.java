@@ -11,8 +11,8 @@ public class Main_DynamicArray {
         m.insertEnd(3);
         m.display();
         m.deleteIndex(0, 0);
-        m.display();
-         */ 
+        m.display(); 
+        
         MyArrayList1D array = new MyArrayList1D();
         array.insertStart(5); 
         array.display();
@@ -24,6 +24,7 @@ public class Main_DynamicArray {
         array.display();
         array.insertAfter(4, 1);
         array.display();
+         */
         System.out.println("done - tried and tested"); // you can test each method of the dynamic array's here
     }
 

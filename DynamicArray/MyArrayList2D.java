@@ -352,16 +352,16 @@ public class MyArrayList2D<T extends Comparable<T>> {
 //        }
 //        WAY TWO -- thinking
 //        WAY THREE 
-        while (find(valueToDelete) == true) {
-            deleteByNull(valueToDelete);
+        int[] index = getIndex(valueToDelete);
+        while (index[0] != -1) {
+            deleteIndex(index[0], index[1]);
+            index = getIndex(valueToDelete);
         }
         System.out.println("SUCCESS: All instances of '" + valueToDelete + "' have been deleted successfully. ");
     }
 
     public boolean deleteByNull(T valueToDelete) {
-        /*
-        method: deletes a specific valueToDelete. first it finds its address of row,col using the getIndex method. if the valueToDelete isnt found, return false. it makes that address null and moves the currentRow and currentCol to that position so that the next insertion is at that null valueToDelete. 
-         */
+        // method: deletes a specific valueToDelete. first it finds its address of row,col using the getIndex method. if the valueToDelete isnt found, return false. it makes that address null and moves the currentRow and currentCol to that position so that the next insertion is at that null valueToDelete. 
         int[] find = getIndex(valueToDelete);
         if (find[0] == -1) {
             System.out.println("ERROR: The value '" + valueToDelete + "' cannot be deleted as it does not exist in MyArrayList2D. ");
@@ -381,7 +381,16 @@ public class MyArrayList2D<T extends Comparable<T>> {
 
     public T deleteLast() {
         // method: delets the last value
-        return deleteIndex(currentRow, currentCol);
+        if (isEmpty() == false) {
+            T deletingValue = array[currentRow][currentCol];
+            array[currentRow][currentCol] = null;
+            int[] backwardIndex = moveBackward(currentRow, currentCol);
+            currentRow = backwardIndex[0];
+            currentCol = backwardIndex[1];
+            return deletingValue;
+        } else {
+            return null;
+        }
     }
 
     public void sortLowToHigh() {

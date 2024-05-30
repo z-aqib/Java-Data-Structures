@@ -38,4 +38,9 @@ This table lists the possible functions in MyArrayList, how they were implemente
 | 19 | **capacity**(): int | the total space of the DS | *O(1)* | returns *array.length* | *O(1)* | returns *array.length* * *array[0].length* | 
 | 20 | **isEmpty**(): boolean | is the DS empty? | *O(1)* | returns if _size()_ is equal to 0 | *O(1)* | returns if _currentRow_ and _currentCol_ are equal to -1 | 
 | 21 | **isFull**(): boolean | is the DS full? | *O(1)* | returns if _size()_==_capacity()_ | *O(1)* | returns if _size()_==_capacity()_ |
-| 22 | **deleteIndex**(index): T | deletes a specific index & returns the data on it | *O(n)* | shift all values after _index_ one backward and make the _pointerIndex_ index null | _O(m*n)_ | shift all values after _index_ one backward and move _currentRow_ and _currentCol_ one back |
+| 22 | **deleteIndex**(index): T (where *index* is *row, col* for 2D) | deletes a specific index & returns the data on it | *O(n)* | shift all values after _index_ one backward and make the _pointerIndex_ index null | _O(m*n)_ | shift all values after _index_ one backward and move _currentRow_ and _currentCol_ one back |
+| 23 | **deleteFirstOccurence**(data): T | deletes the first occurence of given data | *O(n)* | finds the index of _data_ and calls _deleteIndex()_ |  _O(m*n)_ | finds the row, col of _data_ and calls _deleteIndex()_ |
+| 24 | **deleteAllOccurrences**(data): void | deletes all the occurences of given data | *O(n^2)* | repeatedly calls _deleteFirstOccurence()_ each time _find(data)_ is true | _O((m*n)^2)_ | repeatedly calls _deleteFirstOccurence()_ each time _find(data)_ is true |
+| 25 | **deleteByNull**(data): T | deletes the first occurence of given data by making that index NULL | *O(n)* | finds the index of that data and *O(1)* make it null | _O(m*n)_ | find the row,col of that data and make it null |
+| 26 | **deleteFirst**(): T | deletes the first element | *O(n)* | shifts all the elements one position back | _O(m*n)_ | shifts all the elements one position back |
+| 27 | **deleteLast**(): T | deletes the last element | *O(1)* | 

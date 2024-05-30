@@ -95,37 +95,21 @@ public class MoreOnLL {
     }
 
     public SinglyLL getSinglyLL() {
-        /*
-        method: creates a random, unsorted singlyLL and returns it. 
-         */
+        // method: creates a random, unsorted singlyLL and returns it. 
         SinglyLL singly = new SinglyLL();
         singly.assignRandomIntegers();
         return singly;
     }
 
     public DoublyLL getDoublyLL() {
-        /*
-        method: creates a random, unsorted doublyLL and returns it. 
-         */
+        // method: creates a random, unsorted doublyLL and returns it. 
         DoublyLL doubly = new DoublyLL();
         doubly.assignRandomIntegers();
         return doubly;
     }
 
     public DoublyNode[] listSplit(DoublyLL l) {
-        /*
-        6. Given a doubly linked list, split it into two sublists, one for the 
-        front half, and one for the back half. If the number of elements is odd, 
-        the extra element should go in the front list. So for example, 
-        public node[ ] ListSplit(Linklist L) on the list {2, 3, 5, 7, 11} should 
-        return the two lists {2, 3, 5} and {7, 11}. 
-        Note: Getting this right for all the cases is harder than it looks. You 
-        should check your solution against a few cases (length = 2, length = 3, 
-        length=4) to make sure that the list gets split correctly near the 
-        short-list boundary conditions. If it works right for length=4, it 
-        probably works right for length=1000. You will probably need special 
-        case code to deal with the (length <2) cases.
-         */
+        // 6. Given a doubly linked list, split it into two sublists, one for the front half, and one for the back half. If the number of elements is odd, the extra element should go in the front list. So for example, public node[ ] ListSplit(Linklist L) on the list {2, 3, 5, 7, 11} should return the two lists {2, 3, 5} and {7, 11}. Note: Getting this right for all the cases is harder than it looks. You should check your solution against a few cases (length = 2, length = 3, length=4) to make sure that the list gets split correctly near the short-list boundary conditions. If it works right for length=4, it probably works right for length=1000. You will probably need special case code to deal with the (length <2) cases.
         DoublyNode middle = findMiddleNodeD(l.getFirst());
         if (middle.previous != null) {
             middle.previous.next = null;

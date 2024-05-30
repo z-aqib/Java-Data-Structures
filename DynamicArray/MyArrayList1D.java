@@ -294,7 +294,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
         }
         T deletingValue = array[indexToDelete];
         //until the last indexToDelete, move each value forward to remove the removing indexToDelete
-        while (indexToDelete + 1 < capacity()) {
+        while (indexToDelete + 1 < size()) {
             this.array[indexToDelete++] = this.array[indexToDelete + 1];
         }
         this.array[this.pointerIndex--] = null;
@@ -303,10 +303,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public T deleteFirstOccurence(T valueToDelete) {
-        /*
-        method: this method removes a specific valueToDelete from the array. BIG OH = n. 
-        it backtracks the rest of the values. first find the index that you want to remove. then remove that index. 
-         */
+        // method: this method removes a specific valueToDelete from the array. BIG OH = n. it backtracks the rest of the values. first find the index that you want to remove. then remove that index. 
         int index = getIndex(valueToDelete);
         if (index != -1) {
             return deleteIndex(index);
@@ -316,13 +313,26 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public void deleteAllOccurrences(T valueToDelete) {
-        // method: deletes all occurences of a value. BIG OH = n. repeatedly calls delete until the value is no longer found
+        // method: deletes all occurences of a value. BIG OH = n^2. repeatedly calls delete until the value is no longer found
         int index = getIndex(valueToDelete);
         while (index != -1) {
             deleteIndex(index);
             index = getIndex(valueToDelete);
         }
         System.out.println("SUCCESS: All occurences of '" + valueToDelete + "' has been deketed successfully. ");
+    }
+
+    public boolean deleteByNull(T valueToDelete) {
+        // method: deletes a specific valueToDelete. first it finds its address using the getIndex method. if the valueToDelete isnt found, return false. it makes that address null and moves the pointerIndex to that position so that the next insertion is at that null valueToDelete. 
+        int find = getIndex(valueToDelete);
+        if (find == -1) {
+            System.out.println("ERROR: The value '" + valueToDelete + "' cannot be deleted as it does not exist in MyArrayList1D. ");
+            return false;
+        }
+        this.array[find] = null;
+        pointerIndex = find;
+        System.out.println("SUCCESS: The value '" + valueToDelete + "' has been deleted successfully by making it null. ");
+        return true;
     }
 
     public T deleteFirst() {
@@ -332,7 +342,13 @@ public class MyArrayList1D<T extends Comparable<T>> {
 
     public T deleteLast() {
         // method: deletes the last index. BIG OH = 1. 
-        return deleteIndex(pointerIndex);
+        if (isEmpty() == false) {
+            T deletingValue = array[pointerIndex];
+            array[pointerIndex--] = null;
+            return deletingValue;
+        } else {
+            return null;
+        }
     }
 
     public void sortLowToHigh() {
