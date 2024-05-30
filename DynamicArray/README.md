@@ -14,8 +14,9 @@ The resizable unlimited option is available for **both**.
 This table lists the possible functions in MyArrayList, how they were implemented and what their time complexity is. 
 * n ~> elements in each row 
 * m ~> elements in each column
+* MAL ~> MyArrayList
 
-| Count | Function Name | Use | 1D | Implementation | 2D | Implementation |
+|       | Function Name | Use | MAL1D | Implementation | MAL2D | Implementation |
 | ----- | ------------- | --- | -- | -------------- | -- | -------------- |
 | 1     | **constructor**(): void | starts DS with a standard size | *O(1)* | initializes size of 5 to the constructor(size) | *O(1)* | initializes size of 5 by 5 to the constructor(row,col) |
 | 2     | **constructor**(size): void (where *size* will be *row, col* for 2D) | starts DS with given *size* | *O(1)* | initializes array[] of size *size* | *O(1)* | initializes array[][] of size rows *row* by columns *col* |
