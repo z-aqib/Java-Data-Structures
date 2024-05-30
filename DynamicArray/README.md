@@ -16,12 +16,12 @@ This table lists the possible functions in MyArrayList, how they were implemente
 * m ~> elements in each column
 * MAL ~> MyArrayList
 
-|       | Function Name | Use | MAL1D | Implementation | MAL2D | Implementation |
+|       | Function Name | Use | 1D | Implementation | 2D | Implementation |
 | ----- | ------------- | --- | -- | -------------- | -- | -------------- |
 | 1     | **constructor**(): void | starts DS with a standard size | *O(1)* | initializes size of 5 to the constructor(size) | *O(1)* | initializes size of 5 by 5 to the constructor(row,col) |
 | 2     | **constructor**(size): void (where *size* will be *row, col* for 2D) | starts DS with given *size* | *O(1)* | initializes array[] of size *size* | *O(1)* | initializes array[][] of size rows *row* by columns *col* |
 | 3     | **toString**(): String | converts DS into a single string | *O(n)* | adds each non-null element enclosed in square brackets [] | *O(m * n)* | adds all the m*n elements in a tabular form, with row and column numbers for better readability |
-| 4     | **display**(): void | displays the DS | *O(n)* | prints toString() | *O(m * n)* | prints toString() |
+| 4     | **display**(): void | displays the DS | *O(n)* | prints toString() | _O(m*n)_ | prints toString() |
 | 5     | **insertStart**(data): void | inserts at the start | *O(n)* | moves each element one forward and places *data* at index 0 | *O(m * n)* | moves each element one forward and places *data* at index (0,0) |
 | 6     | **insertEnd**(data): void | inserts at the end, after the last added element | *O(n)* | call *incSize()* if array is full and place *data* at index _pointerIndex_ | *O(m * n)* | call *incSize()* if array is full and place *data* at index (_currentRow_, _currentCol_) |
 | 7     | **insertBefore**(dataBefore, dataInsert): boolean | inserts a data before a given data | *O(n)* | shift all the elements after and including *dataBefore* and place *dataInsert* at the previous index of *dataBefore* | *O(m * n)* | shift all the elements after and including *dataBefore* and place *dataInsert* at the previous index of *dataBefore* |
