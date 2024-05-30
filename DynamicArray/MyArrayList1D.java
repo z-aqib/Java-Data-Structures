@@ -18,7 +18,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
 
     public MyArrayList1D(int size) {
         // constructor: creates an array of the given capacity by calling the start() method
-        System.out.println("Welcome to MyArrayList!");
+        System.out.println("Welcome to MyArrayList1D!");
         start(size);
         System.out.println("Program has started running successfully. ");
     }

@@ -19,7 +19,7 @@ This table lists the possible functions in MyArrayList, how they were implemente
 | ----- | ------------- | ------------- | -------------- | ------------- | -------------- |
 | 1 | constructor(): void | *O(1)* | intializes a standard size of 5 to the constructor with parameters | *O(1)* | intializes a standard size of 5 by 5 to the constructor with parameters |
 | 2 | constructor(size): void (where *size* will be *row, col* for 2D) | *O(1)* | intializes array of size *size* | *O(1)* | intializes array[][] of size rows *row* by cols *col* |
-| 3 | toString(): String | *O(n)* | adds each non-null element | *O(m * n)* | displays all the m*n elements |
+| 3 | toString(): String | *O(n)* | adds each non-null element enclosed in square brackets [] | *O(m * n)* | adds all the m*n elements in a tabular form, with row and column numbers for better readability |
 | 4 | display(): void | *O(n)* | prints toString() | *O(m * n)* | prints toString() |
 | 5 | insertStart(data): void | *O(n)* | moves each element one forward and places *data* at index 0 | *O(m * n)* | moves each element one forward and places *data* at index (0,0) |
 | 6 | insertEnd(data): void | *O(n)* | call *incSize()* if array is full and place *data* at _pointerIndex_ | *O(m * n)* | call *incSize()* if array is full and place *data* at _pointerIndex_ |
