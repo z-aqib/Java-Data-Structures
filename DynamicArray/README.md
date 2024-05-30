@@ -17,12 +17,12 @@ This table lists the possible functions in MyArrayList, how they were implemente
 * n ~> elements in each row 
 * m ~> elements in each column
 
-| Function Name | MyArrayList1D | Implementation | MyArrayList2D | Implementation |
-| ------------- | --------------- | -------------- | --------------- | -------------- |
-| constructor(): void | *O(1)* | intializes a standard size of 5 to the constructor with parameters | *O(1)* | intializes a standard size of 5 by 5 to the constructor with parameters |
-| constructor(size): void (where *size* will be *row, col* for 2D) | *O(1)* | intializes array of size *size* | *O(1)* | intializes array[][] of size rows *row* by cols *col* |
-| toString(): String | *O(n)* | displays each non-null element | *O(m * n)* | displays all the m*n elements |
-| display(): void | *O(n)* | prints toString() | *O(m * n)* | prints toString() |
-| insertStart(data): void | *O(n)* | moves each element one forward and places *data* at index 0 | *O(m * n)* | moves each element one forward and places *data* at index (0,0) |
-| insertEnd(data): void | *O(n)* | call *incSize()* if array is full and place *data* at _pointerIndex_ | *O(m * n)* | call *incSize()* if array is full and place *data* at _pointerIndex_ |
-| insertBefore(dataBefore, dataInsert): boolean | *O(n)* | shift all the elements after and including *dataBefore* and place *dataInsert* before |
+| Count | Function Name | MyArrayList1D | Implementation | MyArrayList2D | Implementation |
+| ----- | ------------- | ------------- | -------------- | ------------- | -------------- |
+| 1 | constructor(): void | *O(1)* | intializes a standard size of 5 to the constructor with parameters | *O(1)* | intializes a standard size of 5 by 5 to the constructor with parameters |
+| 2 | constructor(size): void (where *size* will be *row, col* for 2D) | *O(1)* | intializes array of size *size* | *O(1)* | intializes array[][] of size rows *row* by cols *col* |
+| 3 | toString(): String | *O(n)* | displays each non-null element | *O(m * n)* | displays all the m*n elements |
+| 4 | display(): void | *O(n)* | prints toString() | *O(m * n)* | prints toString() |
+| 5 | insertStart(data): void | *O(n)* | moves each element one forward and places *data* at index 0 | *O(m * n)* | moves each element one forward and places *data* at index (0,0) |
+| 6 | insertEnd(data): void | *O(n)* | call *incSize()* if array is full and place *data* at _pointerIndex_ | *O(m * n)* | call *incSize()* if array is full and place *data* at _pointerIndex_ |
+| 7 | insertBefore(dataBefore, dataInsert): boolean | *O(n)* | shift all the elements after and including *dataBefore* and place *dataInsert* before |
