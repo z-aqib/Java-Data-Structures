@@ -352,10 +352,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public void sortLowToHigh() {
-        /*
-        method: sorts the array. BIG OH = n^2. 
-        getValue a value and compare it to each value after it IF they are not null. if the value being compared with each value is LARGER, switch its places. then do this in nested for loop so that each value in the array is compared with every value. 
-         */
+        // method: sorts the array. BIG OH = n^2. getValue a value and compare it to each value after it IF they are not null. if the value being compared with each value is LARGER, switch its places. then do this in nested for loop so that each value in the array is compared with every value. 
         if (sorted == true) {
             System.out.println("MyArrayList1D is already sorted. ");
             return;
@@ -363,7 +360,8 @@ public class MyArrayList1D<T extends Comparable<T>> {
         for (int i = 0; i < this.array.length; i++) {
             for (int j = i + 1; j < this.array.length; j++) {
                 if (this.array[i] != null && this.array[j] != null && this.array[i].compareTo(this.array[j]) == 1) {
-                    T temp = this.array[j];//swap the values
+                    // swap the values
+                    T temp = this.array[j];
                     this.array[j] = this.array[i];
                     this.array[i] = temp;
                 }
@@ -374,21 +372,25 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public void removingDuplicates() {
-        //method: removes duplicates. BIG OH = n. sort the array then check each value with its forward value. if same, remove it
+        // method: removes duplicates. BIG OH = n. sort the array then check each value with its forward value. if same, remove it
         if (sorted == false) {
             sortLowToHigh();
         }
+        int count = 0;
         for (int i = 0; i + 1 < capacity(); i++) {
             // forward checking
             if (array[i] != null && array[i + 1] != null && array[i].compareTo(array[i + 1]) == 0) {
                 deleteIndex(i + 1);
+                count++;
             }
             // backward checking
             if (i != 0 && array[i] != null && array[i - 1] != null && array[i].compareTo(this.array[i - 1]) == 0) {
                 deleteIndex(i);
+                count++;
             }
         }
         System.out.println("SUCCESS: All the duplicates have been removed successfully. ");
+        System.out.println("Number of duplicates removed = " + count);
     }
 
     public T findMax() {

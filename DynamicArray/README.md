@@ -43,4 +43,8 @@ This table lists the possible functions in MyArrayList, how they were implemente
 | 24 | **deleteAllOccurrences**(data): void | deletes all the occurences of given data | *O(n^2)* | repeatedly calls _deleteFirstOccurence()_ each time _find(data)_ is true | _O((m*n)^2)_ | repeatedly calls _deleteFirstOccurence()_ each time _find(data)_ is true |
 | 25 | **deleteByNull**(data): T | deletes the first occurence of given data by making that index NULL | *O(n)* | finds the index of that data and *O(1)* make it null | _O(m*n)_ | find the row,col of that data and make it null |
 | 26 | **deleteFirst**(): T | deletes the first element | *O(n)* | shifts all the elements one position back | _O(m*n)_ | shifts all the elements one position back |
-| 27 | **deleteLast**(): T | deletes the last element | *O(1)* | 
+| 27 | **deleteLast**(): T | deletes the last element | *O(1)* | makes the _pointerIndex_ index null | _O(1)_ | makes index (_currentRow_, _currentCol_) null | 
+| 28 | **sortLowToHigh**(): void | sorts the DS from low to high | *O(n^2)* | performs selection sort | _O((m*n)^2)_ | performs selection sort |
+|29| **removingDuplicates**(): void | removes duplicates in the DS after sorting it | *O(n)* | compares each element with its preceeding and succeeding element | _O(m*n)_ | compares each element with its preceeding and succeeding element | 
+| 30 | **findMax**(): T | returns the maximum element in the DS | *O(n^2)* | first sorts, then returns last element | _O((m*n)^2)_ | first sorts, then returns last element |
+| 31 | **findMin**(): T | 

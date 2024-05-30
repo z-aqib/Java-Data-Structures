@@ -394,9 +394,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public void sortLowToHigh() {
-        /*
-        method: get a value (row, col) and compare it to each value after it IF they are not null. if the value being compared with each value is LARGER, switch its places. then do this in nested for loop so that each value in the array is compared with every value. 
-         */
+        // method: get a value (row, col) and compare it to each value after it IF they are not null. if the value being compared with each value is LARGER, switch its places. then do this in nested for loop so that each value in the array is compared with every value. 
         if (sorted == true) {
             System.out.println("MyArrayList2D is already sorted. ");
             return;
@@ -426,9 +424,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public void removingDuplicates() {
-        /*
-        method: removes duplicates. first it sorts the list. then it gets each row, column and compares it to the next value. if it is same, remove that value. then it compares that existing row, col to the previous value. if it is same, remove that value. do this repeatedly for the entire matrix. 
-         */
+        // method: removes duplicates. first it sorts the list. then it gets each row, column and compares it to the next value. if it is same, remove that value. then it compares that existing row, col to the previous value. if it is same, remove that value. do this repeatedly for the entire matrix. 
         if (sorted == false) {
             sortLowToHigh();
         }
@@ -454,6 +450,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
                 }
             }
         }
+        System.out.println("SUCCESS: All the duplicates have been removed successfully. ");
         System.out.println("Number of duplicates removed = " + count);
     }
 
