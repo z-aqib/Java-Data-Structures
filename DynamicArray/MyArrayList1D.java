@@ -245,10 +245,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public T getLast() {
-        /*
-        method: gets the last CONTINOUS element in the arraylist, updated indexes do not count. BIG OH = 1. 
-        i.e., if my arraylist is 1 5 4 3 n n n 10 n n, where n = null, then this method will return 3 as the last continuous value, 10 must have been inserted using insertAt() or updateIndex()
-         */
+        // method: gets the last CONTINOUS element in the arraylist, updated indexes do not count. BIG OH = 1. i.e., if my arraylist is 1 5 4 3 n n n 10 n n, where n = null, then this method will return 3 as the last continuous value, 10 must have been inserted using insertAt()
         if (size() > 0) {
             return this.array[this.pointerIndex];
         } else {
@@ -258,7 +255,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public boolean clear(T value) {
-        //method: clear the array. make array new and default size, clear the index pointer and extra counter
+        // method: clear the array. make array new and default size, clear the index pointer and extra counter
         start(array.length);
         System.out.println("SUCCESS: MyArrayList has been cleared successfully. \n" + toString());
         System.out.println("Size = " + size() + "\nCapacity = " + capacity());
@@ -266,15 +263,12 @@ public class MyArrayList1D<T extends Comparable<T>> {
     }
 
     public int size() {
-        /*
-        method: gets how many elements are initialized in the array. BIG OH = 1. 
-        return the number of indexes used ex if pointerIndex is -1, it means 0 indexes used
-         */
+        // method: gets how many elements are initialized in the array. BIG OH = 1. return the number of indexes used ex if pointerIndex is -1, it means 0 indexes used
         return this.pointerIndex + 1 + this.extraIndexCounter;
     }
 
     public int capacity() {
-        //method: gets how many spaces we have in total. return the capacity of the array. BIG OH = 1;
+        // method: gets how many spaces we have in total. return the capacity of the array. BIG OH = 1;
         return this.array.length;
     }
 

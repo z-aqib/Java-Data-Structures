@@ -31,4 +31,8 @@ This table lists the possible functions in MyArrayList, how they were implemente
 | 12    | **find**(data): boolean | *O(n)* | traverses the array[] and returns if found or not | *O(m * n)* | traverses the array[][] and returns if found or not |
 | 13    | **getValue**(index): T (where *index* is *row, col* for 2D) | *O(1)* | returns the data at *index* | *O(1)* | returns the data at *index* |
 | 14    | **getIndex**(data): int (it will return int[] for 2D) | *O(n)* | traverses the array[] to find the data and returns its index found on | *O(m * n)* | traverses the array[][] to find the *data* and returns the index (row,col) at which it was found |
-
+| 15    | **getFirst**(): T | *O(1)* | returns data at the 0th index | *O(1)* | returns data at the (0,0)th index |
+| 16    | **getLast**(): T | *O(1)* | returns data at _pointerIndex_ index | *O(1)* | returns data at (_currentRow_, _currentCol_) index |
+| 17    | **clear**(): boolean | *O(1)* | re-initializes the array[] of same length | *O(1)* | re-initializes the array[][] of same rows and columns |
+| 18    | **size**(): int | *O(1)* | returns the used up/occupied space of the array[] which is maintained by _pointerIndex_ and _extraIndexesCounter_ | *O(1)* | returns the occupied space of array[][] by calculating using _currentRow_ and _currentCol_ |
+| 19    | **capacity**(): int | *O(1)* | returns the capacity of the array[], i.e. *array.length* | *O(1)* | returns capacity of array[][] i.e. *array.length* * *array[0].length* | 

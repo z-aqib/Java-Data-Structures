@@ -295,7 +295,7 @@ public class MyArrayList2D<T extends Comparable<T>> {
     }
 
     public int capacity() {
-        //method: tells how many available spaces are in the matrix.
+        // method: tells how many available spaces are in the matrix.
         return array.length * array[0].length;
     }
 
