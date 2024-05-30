@@ -32,18 +32,18 @@ This table lists the possible functions in all the data structures, and what the
 | 22 | **deleteIndex**(index): T | deletes a specific index & returns the data on it |
 | 23 | **deleteFirstOccurence**(data): T | deletes the first occurence of given data |
 | 24 | **deleteAllOccurrences**(data): void | deletes all the occurences of given data |
-| 25 | **deleteByNull**(data): T | deletes the first occurence of given data by making that index NULL |
+| 25 | **deleteByNull**(data): T | deletes the first occurence of given data by making that index null |
 | 26 | **deleteFirst**(): T | deletes the first element |
 | 27 | **deleteLast**(): T | deletes the last element |
 | 28 | **sortLowToHigh**(): void | sorts the DS from low to high |
 | 29 | **removingDuplicates**(): void | removes duplicates in the DS after sorting it |
 | 30 | **findMax**(): T | returns the maximum element in the DS |
 | 31 | **findMin**(): T | returns the minimum element in the DS |
-| 32 | **toArray**(): T[] | converts DynamicArray to a normal array |
+| 32 | **toArray**(): T[] | converts DS to a normal array |
 | 33 | **reverse**(): void | reverses the elements of the array |
-| 34 | **incSize**(size): void | increases array size, provides dynamic property |
+| 34 | **incSize**(size): void | increases DS size, provides dynamic property |
 | 35 | **assignRandomIntegers**(): void | assigns random integers between 1 to 10 in the DS |
-| 36 | **merge**(MyArrayList, MyArrayList): MyArrayList | merges two MyArrayLists of capacity p, q into one |
-| 37 | **getMyArrayList**(): MyArrayList | returns a randomly generated MyArrayList |
-| 38 | **appendRow**(row): void | appends a given row to MyArrayList2D |
-| 39 | **appendCol**(col): void | appends a given column to MyArrayList2D |
+| 36 | **merge**(DS, DS): DS | merges two same DS of capacity p, q into one |
+| 37 | **getDS**(): DS | returns a DS of standard size with random integers in it |
+| 38 | **appendRow**(row): void | appends a given row to DS |
+| 39 | **appendCol**(col): void | appends a given column to DS |
