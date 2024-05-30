@@ -9,7 +9,7 @@ public class DataStructuresMAIN {
         BinarySearchTree.Main_BST.main(args);
 
         System.out.println("\n///////////////// DYNAMIC ARRAY /////////////////");
-        DynamicArray.MainDynamicArray.main(args);
+        DynamicArray.Main_DynamicArray.main(args);
 
         System.out.println("\n///////////////// HASHING /////////////////");
         Hashing.Main_Hashing.main(args);

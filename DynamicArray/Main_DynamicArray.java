@@ -1,7 +1,7 @@
 package DynamicArray;
 
 // FINISHED
-public class MainDynamicArray {
+public class Main_DynamicArray {
 
     public static void main(String[] args) {
         /*
