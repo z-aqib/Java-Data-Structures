@@ -8,6 +8,11 @@ public class HashOpenAddQuad<T extends Comparable<T>> {
     private Comparable<T>[] table; // the table of values
     private int countOccupied; // the number of occupied values
 
+    public HashOpenAddQuad() {
+        //constructor: passes to next constructor with standard table size 100
+        this(10);
+    }
+
     public HashOpenAddQuad(int size) {
         // constructor: creates a table of 1.33 times of given size and intializes count as 0
         System.out.println("Welcome to MyHashTable! This HashTable implements Open Addressing in Quadratic Form. ");
@@ -15,11 +20,6 @@ public class HashOpenAddQuad<T extends Comparable<T>> {
         // table size should be a prime number and 1/3 extra.
         this.countOccupied = 0;
         System.out.println("HashTable of size " + size + " has been created successfully. ");
-    }
-
-    public HashOpenAddQuad() {
-        //constructor: passes to next constructor with standard table size 100
-        this(10);
     }
 
     @Override
