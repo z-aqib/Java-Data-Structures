@@ -146,7 +146,7 @@ public class MyArrayList1D<T extends Comparable<T>> {
         if (indexToInsertAt == this.pointerIndex + 1) { // if its just the next space, insertEnd normally
             insertEnd(valueToInsert);
         } else if (indexToInsertAt <= this.pointerIndex) { // if its in between, shift the rest then insert
-            for (int i = ++pointerIndex; i >= indexToInsertAt; i--) {
+            for (int i = ++pointerIndex; i >= indexToInsertAt && i != 0; i--) {
                 array[i] = array[i - 1];
             }
             array[indexToInsertAt] = valueToInsert;
