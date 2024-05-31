@@ -3,9 +3,7 @@ package DynamicArray;
 // COMPLETED - ALL METHODS DONE
 public class MyArrayList1D<T extends Comparable<T>> {
 
-    /*
-    This is a dynamic (resizeable) array (also known as an array list) data structure. it is one dimensional and of generic (any) type. you can add as many values as you like as it will resize itself where needed. Each method in the class is a function that can be performed on this one dimensional array. 
-     */
+    // This is a dynamic (resizeable) array (also known as an array list) data structure. it is one dimensional and of generic (any) type. you can add as many values as you like as it will resize itself where needed. Each method in the class is a function that can be performed on this one dimensional array. 
     private T[] array; // the array
     private int pointerIndex; // pointer till which indexes previously are filled
     private int extraIndexCounter; // counts the no of indexes filled AFTER the pointerIndex with spaces in between

@@ -2,9 +2,7 @@ package Hashing;
 
 public class HashOpenAddQuad<T extends Comparable<T>> {
 
-    /*
-    This is a hash table data structure. it is NOT resizeable/dynamic. the size is defined at the start. This is used to retrive values in 0(1) and find in 0(1). but this is not always the case - as this hash table is of OPEN ADDRESSING (QUADRATIC). in this, each data value to be added or retrieved gets an index computed based on their data, and it maps it to that index. but, if the index has already been asisgned to a data, the index is Re-Hashed (recomputed) until an empty index is found. 
-     */
+    // This is a hash table data structure. it is NOT resizeable/dynamic. the size is defined at the start. This is used to retrive values in 0(1) and getIndex in 0(1). but this is not always the case - as this hash table is of OPEN ADDRESSING (QUADRATIC). in this, each data value to be added or retrieved gets an index computed based on their data, and it maps it to that index. but, if the index has already been asisgned to a data, the index is Re-Hashed (recomputed) until an empty index is found. 
     private Comparable<T>[] table; // the table of values
     private int countOccupied; // the number of occupied values
 
@@ -49,22 +47,18 @@ public class HashOpenAddQuad<T extends Comparable<T>> {
         return sum;
     }
 
-    public int Hash(int sum) {
+    private int Hash(int sum) {
         // method: hash value calculator. compute hash value by taking mod on table length
         return sum % table.length;
     }
 
-    public int Rehash(int sum, int i) {
-        /* 
-        method: rehash function. in quadratic addressing, we will square 'i' which is the number of times we encounter a collision. then we will call hash() function and find the hash of the new value (value + i^2)
-         */
+    private int Rehash(int sum, int i) {
+        // method: rehash function. in quadratic addressing, we will square 'i' which is the number of times we encounter a collision. then we will call hash() function and getIndex the hash of the new value (value + i^2)
         return Hash(sum + (int) (Math.pow(i, 2)));
     }
 
     public int insert(Comparable<T> valueToBeInserted) {
-        /*
-        method: inserts a value in the table using its hash() value. call strToInt(v) and change the value to string, save return value in sum. call Hash(sum) and save return value in sum if (no collision on hash value) then place value else call rehash function until empty cell found also compute number of collisions on insertion of each word. IF a significant number of iterations have been run, it throws error that it cannot be inserted. RETURNS: number of iterations to insert that value.  
-         */
+        // method: inserts a value in the table using its hash() value. call strToInt(v) and change the value to string, save return value in sum. call Hash(sum) and save return value in sum if (no collision on hash value) then place value else call rehash function until empty cell found also compute number of collisions on insertion of each word. IF a significant number of iterations have been run, it throws error that it cannot be inserted. RETURNS: number of iterations to insert that value.  
         if (countOccupied == table.length) {
             System.out.println("ERROR: Cannot be inserted as hash table is full. ");
             return -1;
@@ -76,7 +70,7 @@ public class HashOpenAddQuad<T extends Comparable<T>> {
             sum = Rehash(sum, ++i);
         }
         if (i > table.length) {
-            System.out.println("ERROR: Cannot be inserted as Re-Hash has ran " + i + " times and no available index is found. ");
+            System.out.println("ERROR: Cannot be inserted as Re-Hash has ran " + i + " times and no available index is found. To fix this, either change your toString() of this data OR use a hashtable with greater size. ");
             return -1;
         }
         this.table[sum] = valueToBeInserted;
@@ -85,31 +79,41 @@ public class HashOpenAddQuad<T extends Comparable<T>> {
         return i;
     }
 
-    public boolean find(Comparable<T> valueToBeSearched) {
-        /*
-        method: find word in a hash table
-        first it changes the object to string, computes its sum, then computes its 
-        hash() value. then it iteratively searches for that value at 
-         */
-        int sum = strToInt(valueToBeSearched.toString());
-        sum = Hash(sum);
-        int i = 0;
-        while (i <= 50 && table[sum] == null || table[sum].compareTo((T) valueToBeSearched) != 0) {
-            sum = Rehash(sum, ++i);
-        }
-        if (table[sum] != null && table[sum].compareTo((T) valueToBeSearched) == 0) {
-            System.out.println("SUCCESS: '" + valueToBeSearched.toString() + "' is found at index " + sum);
-            return true;
-        }
-        System.out.println("ERROR: '" + valueToBeSearched.toString() + "' could not be found. ");
+    public boolean update(Comparable<T> valueToBeChanged, Comparable<T> valueUpdated) {
         return false;
     }
 
+    public boolean find(Comparable<T> valueToFind) {
+        // method: finds a value in the hashtable. returns if the value exists or not. first it gets the index it exists on. if its a valid index, return true, else false, it doesnt exist. 
+        int index = getIndex(valueToFind);
+        if (index >= 0) {
+            System.out.println("SUCCESS: Value '" + valueToFind + "' exists in MyHashTable. ");
+            return true;
+        } else {
+            System.out.println("ERROR: Value '" + valueToFind + "' exists in MyHashTable. ");
+            return false;
+        }
+    }
+
+    public int getIndex(Comparable<T> valueToBeSearched) {
+        // method: get Index of word in a hash table. first it changes the object to string, computes its sum, then computes its hash() value. then it iteratively searches for that value using i . if i reaches its iterations limit
+        int sum = strToInt(valueToBeSearched.toString());
+        sum = Hash(sum);
+        int i = 0;
+        while (i < (table.length * 5) && (table[sum] == null || table[sum].compareTo((T) valueToBeSearched) != 0)) {
+            sum = Rehash(sum, ++i);
+        }
+        if (table[sum] != null && table[sum].compareTo((T) valueToBeSearched) == 0) {
+            System.out.println("SUCCESS: '" + valueToBeSearched + "' is found at index " + sum);
+            return sum;
+        }
+        System.out.println("ERROR: '" + valueToBeSearched + "' could not be found. ");
+        return -1;
+    }
+
     public boolean delete(Comparable<T> valueToBeDeleted) {
-        /*
-        method: delete word from hash table. first find for the value. if found, then proceed deletion. run a loop and keep checking if the hash() and rehash() is equal to the value that is being deleted. if yes, make that value null. 
-         */
-        if (find(valueToBeDeleted) == true) {
+        // method: delete word from hash table. first getIndex for the value. if found, then proceed deletion. run a loop and keep checking if the hash() and rehash() is equal to the value that is being deleted. if yes, make that value null. 
+        if (getIndex(valueToBeDeleted) >= 0) {
             int sum = strToInt(valueToBeDeleted.toString());
             sum = Hash(sum);
             int i = 0;

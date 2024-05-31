@@ -43,7 +43,7 @@ This table lists the possible functions in all the data structures, and what the
 | 33 | **reverse**(): void | reverses the elements of the array |
 | 34 | **incSize**(size): void | increases DS size, provides dynamic property |
 | 35 | **assignRandomIntegers**(): void | assigns random integers between 1 to 10 in the DS |
-| 36 | **merge**(DS, DS): DS | merges two same DS of capacity p, q into one |
+| 36 | **merge**(DS, DS): DS | merges two DS (same type) of capacity p, q into one |
 | 37 | **getDS**(): DS | returns a DS of standard size with random integers in it |
 | 38 | **appendRow**(row): void | appends a given row to DS |
 | 39 | **appendCol**(col): void | appends a given column to DS |

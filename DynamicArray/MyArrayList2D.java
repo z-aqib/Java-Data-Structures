@@ -3,9 +3,7 @@ package DynamicArray;
 // COMPLETED - ALL METHODS DONE
 public class MyArrayList2D<T extends Comparable<T>> {
 
-    /*
-    This is a dynamic (resizeable) array (also known as an array list) data structure. it is two dimensional and of generic (any) type. you can insertEnd as many values as you like as it will resize itself where needed. Each method in the class is a function that can be performed on this two dimensional array. 
-     */
+    // This is a dynamic (resizeable) array (also known as an array list) data structure. it is two dimensional and of generic (any) type. you can insertEnd as many values as you like as it will resize itself where needed. Each method in the class is a function that can be performed on this two dimensional array. 
     private T[][] array; // the array containing the values
     private int currentRow; // the current row till which we have filled
     private int currentCol; // the current column till which we have filled
